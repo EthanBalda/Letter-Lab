@@ -1,0 +1,78 @@
+The Letters Rules:
+
+a; Apathetic
+Does nothing. Other letters can interact with it.
+
+b; Basic : aba -> aab OR baa
+Swaps places with a cardinally adjacent letter.
+
+c; Complex : aacaa -> caaaa OR aaaac
+Swaps places with a letter cardinally adjacent letter one slot away from it. One more space than b.
+
+d; Delete : adb -> ad_
+Deletes whatever letter tries to interact with it. Has some weird interactions.
+
+e; Eat : abcec -> ab_cc
+Eats any adjacent letter, deleting that letter and becoming it.
+
+f; Force : abfcc -> bfcca OR cabfc
+Moves the entire string or grid cardinally one space. If a letter would be knocked off the string, it wraps back to the start.
+
+g; Grab : abcagbb -> bcaagbb OR abacgbb OR acabgbb
+Grabs a cardinally adjacent letter, pulls it adjacent to ‘g’, then moves all other letters back to fill space.
+
+h; Hold (This may need to be removed with grids) : ahb -> ahb_
+Holds a selected letter over its head, effectively removing it from the string or grid. Can swap out whatever is held with another letter. If it grabs a ‘d’, the ‘h’ and whatever it was holding get deleted, and the ‘d’ moves to the ‘h’ ‘s location. Can only hold and swap any adjacent letter.
+
+i; Immovable : acbi -> acbi
+Cannot be interacted with by anything other than ‘n’.
+
+j; Jump : abcjcba -> jbcacba OR abcacbj
+Like ‘c’, but with 1 more range.
+
+k; Kick : bkabba -> bkbbaa
+The exact opposite of ‘g’. Kicks any cardinally adjacent letter to the edge of the grid or string, then shifts every letter towards it to fill in the gap.
+
+l; Lovely (These should probably be ditched if we commit to grids.) : bacblccbb -> bbaclcbbc
+Pulls every cardinal letter into it whenever it is selected. Letters that would move to the selected ‘l’s slot instead go to the edges.
+
+m; Monstrous (These should probably be ditched if we commit to grids.) : bacbmccbb -> acbbmbccb
+Opposite of ‘l’, they scare every cardinal letter one slot away. Any letters that would go off the grid, instead end up in the empty adjacent slots.
+
+n; No : aabcn -> aacbn BUT NOT aabcn -> acban
+Adjacent letters to an ‘n’ effectively become ‘a’s. They have no special abilities anymore. This also applies to ‘i’s and makes this letter the only way to interact with ‘i’s. If two or more ‘n’s are next to each other, they ‘no’ each other effectively making both work as ‘a’s until they are no longer adjacent. There is no negative stacking, so 3 ‘n’s cancel each other just like 2 ‘n’s.
+
+o; Onomatopoeia : abaobba -> obaabba OR aboabba OR abaabbo
+Can swap places with any selected vowels, except ‘i’.
+
+p; Purge : aipo -> a___
+Deletes self and cardinal neighbors when selected. Only deletes letters when it is selected first. It can be safely swapped with or interacted with by other letters.
+
+q; Queen : (I hope this is self explanatory because listing all the possible moves in even a small puzzle would make this letter look way more complicated than it is.)
+Can swap with any letter, barring ‘i’s and ‘d’s.
+
+r; Remove : accdrca -> a__da_a
+Removes every instance of a selected letter in a level, then transforms itself into an ‘a’. Can only remove a letter that is adjacent to it. Can remove ‘i’s without issue.
+
+s; Spin : bsa -> asb
+Swaps any of the letters adjacent to it with the letter in the opposite adjacent slot. Note that while both adjacent letters are selectable, they have the same result.
+
+t; Toggle : btc -> atc OR atb
+Transforms the selected letter into the previous letter alphabetically. ‘a’s become ‘z’s. Can only ‘toggle’ letters adjacent to it.
+
+u; Undo : buc -> cuc OR bud
+The exact opposite of ‘t’. Changes an adjacent letter to its next letter alphabetically. ‘z’s become ‘a’s.
+
+v; Virus : abvac -> avvac OR abvvc
+Exactly like a ‘b’, but whenever it swaps with a letter, that other letter becomes a ‘v’. ‘i’s are of course immune to this. ‘d’s delete this letter then become a ‘v’. ‘h’ that hold a ‘v’, delete that ‘v’ then become a ‘v’ themselves. t and u transform the letter, then become ‘v’s themselves.
+
+w; Waltz : aciwa -> awica -> waica
+Always swaps diagonally up left when selected. Jumps ‘i’s but does not swap with them. Can only select the diagonal upper left letter. When at the edge, it can select the letter at the other edge to loop around.
+
+x; Xerox : caxb -> baxb
+Selects two letters. Transforms the first letter into the second letter. Can transform letters into ‘i’s. Cannot transform ‘i’s. Same goes for ‘n’s. If it tries to transform a ‘v’, it instead makes both letters ‘v’s.
+
+y; Yeet : baaycib -> byaacib OR baacyib
+Jumps the number of spaces equal to the number of vowels in the cardinal direction it wants to go.
+
+z; Zap : (Like the Queen, showing an example makes this look more complicated than it actually is.)
