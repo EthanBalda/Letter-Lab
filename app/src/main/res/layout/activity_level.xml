@@ -15,20 +15,20 @@
         android:title="@string/game_activity"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <EditText
-        android:id="@+id/levelInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Select Level"
-        android:inputType="number"
-        />
-
     <Button
         android:id="@+id/generateButtonGrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Generate Level"
         />
+
+    <Button
+        android:id="@+id/completeLevelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Complete Level"
+        android:layout_marginTop="16dp" />
+
 
     <ScrollView
         android:layout_width="match_parent"
