@@ -14,6 +14,7 @@ class GameActivity : ComponentActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private var level = 0
+    private val totalLevels = 4
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -192,13 +193,20 @@ class GameActivity : ComponentActivity() {
     }
 
     private fun markLevelComplete() {
-        val completedLevels = sharedPreferences.getInt("completedLevels", 0)
-        if (level == completedLevels) {
-            sharedPreferences.edit().putInt("completedLevels", completedLevels + 1).apply()
-            Toast.makeText(this, "Level ${level + 1} completed!", Toast.LENGTH_SHORT).show()
-            finish() // Go back to the level select screen
+        val editor = sharedPreferences.edit()
+        editor.putInt("level_$level", 2) // Mark the current level as beaten
+
+        // Unlock the next level if it exists
+
+        if (level + 1 < totalLevels) {
+            editor.putInt("level_${level}", 1) // Unlock the next level
         }
+
+        editor.apply()
+        Toast.makeText(this, "Level ${level} completed!", Toast.LENGTH_SHORT).show()
+        finish() // Go back to the level select screen
     }
+
 
     fun toggleGridVis(glayout : GridLayout, rows : Int, columns : Int){
         for (i in 0 until rows) {
@@ -226,36 +234,38 @@ class GameActivity : ComponentActivity() {
             var compH = '_'
             var upH = 0
             for (j in 0 until columns) {
-
+                val ltr = glayout.findViewWithTag<Button>(i * columns + j).text[0]
                 if (compH == '_') {
-                    compH = glayout.findViewWithTag<Button>(i * columns + j).text[0]
+                    compH = ltr
                 }
-                else if (upH == 0) {
-                    if (compH.compareTo(glayout.findViewWithTag<Button>(i * columns + j).text[0]) < 0) {
-                        upH = -1
-                        compH = glayout.findViewWithTag<Button>(i * columns + j).text[0]
+                else if (ltr != '_') {
+                    if (upH == 0) {
+                        if (compH.compareTo(ltr) < 0) {
+                            upH = -1
+                            compH = ltr
+                        }
+                        else if (compH.compareTo(ltr) > 0) {
+                            upH = 1
+                            compH = ltr
+                        }
                     }
-                    else if (compH.compareTo(glayout.findViewWithTag<Button>(i * columns + j).text[0]) > 0) {
-                        upH = 1
-                        compH = glayout.findViewWithTag<Button>(i * columns + j).text[0]
+                    else if (upH == -1) {
+                        if (compH.compareTo(ltr) > 0) {
+                            Toast.makeText(this@GameActivity, "up then down", Toast.LENGTH_SHORT).show()
+                            return false
+                        }
+                        else {
+                            compH = ltr
+                        }
                     }
-                }
-                else if (upH == -1) {
-                    if (compH.compareTo(glayout.findViewWithTag<Button>(i * columns + j).text[0]) > 0) {
-                        Toast.makeText(this@GameActivity, "up then down", Toast.LENGTH_SHORT).show()
-                        return false
-                    }
-                    else {
-                        compH = glayout.findViewWithTag<Button>(i * columns + j).text[0]
-                    }
-                }
-                else{
-                    if (compH.compareTo(glayout.findViewWithTag<Button>(i * columns + j).text[0]) < 0) {
-                        Toast.makeText(this@GameActivity, "down then up", Toast.LENGTH_SHORT).show()
-                        return false
-                    }
-                    else {
-                        compH = glayout.findViewWithTag<Button>(i * columns + j).text[0]
+                    else{
+                        if (compH.compareTo(ltr) < 0) {
+                            Toast.makeText(this@GameActivity, "down then up", Toast.LENGTH_SHORT).show()
+                            return false
+                        }
+                        else {
+                            compH = ltr
+                        }
                     }
                 }
             }
@@ -267,35 +277,38 @@ class GameActivity : ComponentActivity() {
             var compH = '_'
             var upH = 0
             for (i in 0 until rows) {
+                val ltr = glayout.findViewWithTag<Button>(i * columns + j).text[0]
                 if (compH == '_') {
-                    compH = glayout.findViewWithTag<Button>(i * columns + j).text[0]
+                    compH = ltr
                 }
-                else if (upH == 0) {
-                    if (compH.compareTo(glayout.findViewWithTag<Button>(i * columns + j).text[0]) < 0) {
-                        upH = -1
-                        compH = glayout.findViewWithTag<Button>(i * columns + j).text[0]
+                else if (ltr != '_') {
+                    if (upH == 0) {
+                        if (compH.compareTo(ltr) < 0) {
+                            upH = -1
+                            compH = ltr
+                        }
+                        else if (compH.compareTo(ltr) > 0) {
+                            upH = 1
+                            compH = ltr
+                        }
                     }
-                    else if (compH.compareTo(glayout.findViewWithTag<Button>(i * columns + j).text[0]) > 0) {
-                        upH = 1
-                        compH = glayout.findViewWithTag<Button>(i * columns + j).text[0]
+                    else if (upH == -1) {
+                        if (compH.compareTo(ltr) > 0) {
+                            Toast.makeText(this@GameActivity, "up then down", Toast.LENGTH_SHORT).show()
+                            return false
+                        }
+                        else {
+                            compH = ltr
+                        }
                     }
-                }
-                else if (upH == -1) {
-                    if (compH.compareTo(glayout.findViewWithTag<Button>(i * columns + j).text[0]) > 0) {
-                        Toast.makeText(this@GameActivity, "up then down", Toast.LENGTH_SHORT).show()
-                        return false
-                    }
-                    else {
-                        compH = glayout.findViewWithTag<Button>(i * columns + j).text[0]
-                    }
-                }
-                else{
-                    if (compH.compareTo(glayout.findViewWithTag<Button>(i * columns + j).text[0]) < 0) {
-                        Toast.makeText(this@GameActivity, "down then up", Toast.LENGTH_SHORT).show()
-                        return false
-                    }
-                    else {
-                        compH = glayout.findViewWithTag<Button>(i * columns + j).text[0]
+                    else{
+                        if (compH.compareTo(ltr) < 0) {
+                            Toast.makeText(this@GameActivity, "down then up", Toast.LENGTH_SHORT).show()
+                            return false
+                        }
+                        else {
+                            compH = ltr
+                        }
                     }
                 }
             }

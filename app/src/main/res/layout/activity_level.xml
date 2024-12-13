@@ -22,12 +22,7 @@
         android:text="Generate Level"
         />
 
-    <Button
-        android:id="@+id/completeLevelButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Complete Level"
-        android:layout_marginTop="16dp" />
+
 
 
     <ScrollView
