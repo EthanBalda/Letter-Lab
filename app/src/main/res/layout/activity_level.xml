@@ -4,39 +4,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    >
+    android:padding="16dp">
 
+    <!-- Toolbar with a Back Button and Title -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:title="@string/game_activity"
+        android:title="Game Activity"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <!-- Button for generating the level at the top of the screen -->
     <Button
         android:id="@+id/generateButtonGrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Generate Level"
-        />
+        android:layout_marginBottom="8dp" />
 
-
-
-
-    <ScrollView
+    <!-- RelativeLayout for the game area -->
+    <RelativeLayout
+        android:id="@+id/gameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <GridLayout
-            android:id="@+id/gridLayout"
+        <!-- ImageView for the background -->
+        <ImageView
+            android:id="@+id/backgroundImageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="1"
-            android:orientation="horizontal"
-            />
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
 
-    </ScrollView>
+        <!-- ScrollView with GridLayout for game content -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="1"
+                android:orientation="horizontal" />
+
+        </ScrollView>
+
+    </RelativeLayout>
+
 </LinearLayout>
+

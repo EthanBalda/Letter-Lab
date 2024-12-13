@@ -3,12 +3,17 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.GridLayout
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.widget.Toolbar
+import com.bumptech.glide.Glide
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class GameActivity : ComponentActivity() {
 
@@ -16,7 +21,10 @@ class GameActivity : ComponentActivity() {
     private var level = 0
     private val totalLevels = 4
 
-    @SuppressLint("SetTextI18n")
+    private lateinit var backgroundImageView: ImageView
+    private val unsplashApiKey = "4o2U9PpZ47LPEJuqLAA25ExeCyafbTJTq5QAPF_hbkk"
+
+    @SuppressLint("SetTextI18n", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -24,7 +32,9 @@ class GameActivity : ComponentActivity() {
 
         sharedPreferences = getSharedPreferences("GameProgress", MODE_PRIVATE)
         level = intent.getIntExtra("level", 0)
+        backgroundImageView = findViewById(R.id.backgroundImageView)
 
+        fetchRandomBackground("landscape")
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert) // Back arrow icon
@@ -191,6 +201,30 @@ class GameActivity : ComponentActivity() {
 
 
     }
+    private fun fetchRandomBackground(keyword: String) {
+        val call = ApiClient.backgroundApi.getRandomPhoto(unsplashApiKey, keyword)
+
+        call.enqueue(object : Callback<UnsplashPhotoResponse> {
+            override fun onResponse(call: Call<UnsplashPhotoResponse>, response: Response<UnsplashPhotoResponse>) {
+                if (response.isSuccessful) {
+                    val imageUrl = response.body()?.urls?.regular
+                    if (imageUrl != null) {
+                        Glide.with(this@GameActivity)
+                            .load(imageUrl)
+                            .into(backgroundImageView)
+                    }
+                } else {
+                    Toast.makeText(this@GameActivity, "Failed to load background", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<UnsplashPhotoResponse>, t: Throwable) {
+                Toast.makeText(this@GameActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+
 
     private fun markLevelComplete() {
         val editor = sharedPreferences.edit()
