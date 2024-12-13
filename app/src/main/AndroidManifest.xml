@@ -35,6 +35,7 @@
         </activity>
 
         <activity android:name=".DictionaryActivity" />
+        <activity android:name=".LevelSelectActivity" />
 
     </application>
 
