@@ -37,8 +37,42 @@ class GameActivity : ComponentActivity() {
                                 "abbab\nabbab\naafbb\nbabba\nbabba",
                                 "abdb\ndbca\nabcf")*/
 
+        /* References for how 'f' should work
+            5    0    5    0    5    0    5    0
+                           a b b a b
+                           a a f b b
+                           b a b b a
+                           b a b b a
+                           a b b a b
+                              /|\
+                               ^
+                               f
+                              /|\
+        b b a b a          a b b a b          b a b b a
+        b b a b a          a b b a b          b a b b a
+        a f b b a <- <f <- a a f b b -> f> -> b a a f b
+        a b b a b          b a b b a          a b a b b
+        a b b a b          b a b b a          a b a b b
+                              \|/
+                               f
+                               V
+                              \|/
+                           b a b b a
+                           a b b a b
+                           a b b a b
+                           a a f b b
+                           b a b b a
 
-        val levelList = arrayOf("abdb\ndbca\nabcf", "aca")
+         a a d b a          a _ d a a
+         d b c f b -> <f -> d c f b _
+         a b c b a          b c b a a
+
+                  a a d _ b
+         -> f> -> d _ b c f
+                  a a b c b
+         */
+
+        val levelList = arrayOf("aaaaa\nabdba\naaaaa\ncdadc\nebkbe\ncdadc\nbbbbb\nabdba\nbbbbb", "aca")
         val generateButtonGrid: Button = findViewById(R.id.generateButtonGrid)
         val gridLayout: GridLayout = findViewById(R.id.gridLayout)
         var tog = false
@@ -210,7 +244,24 @@ class GameActivity : ComponentActivity() {
 
                                     }
                                     'k' -> {
-
+                                        if (text[0] != '_') {
+                                            val dir : Int
+                                            if (tag == cTag + 1) {
+                                                dir = 1
+                                            }
+                                            else if (tag == cTag - 1) {
+                                                dir = -1
+                                            }
+                                            else if (tag == cTag + columns) {
+                                                dir = -2
+                                            }
+                                            else {
+                                                dir = 2
+                                            }
+                                            cycleGridAboutCoord(gridLayout, rows, columns, cTag, dir, true)
+                                            tog = false
+                                            resetGridVis(gridLayout, rows, columns)
+                                        }
                                     }
                                     'l' -> {
 
@@ -248,6 +299,7 @@ class GameActivity : ComponentActivity() {
         }
     }
 
+    //Shows what letters the 'g' letter can grab. Must be same row or column as 'g'
     private fun showGGridVis(glayout : GridLayout, rows : Int, columns : Int, coord : Int){
         for (i in 0 until rows) {
             for (j in 0 until columns) {
@@ -259,6 +311,7 @@ class GameActivity : ComponentActivity() {
         }
     }
 
+    //Shows all letters that can be grabbed. Used by letters with universal range, such as 'h'
     private fun showAllGridVis(glayout : GridLayout, rows : Int, columns : Int){
         for (i in 0 until rows) {
             for (j in 0 until columns) {
@@ -267,48 +320,19 @@ class GameActivity : ComponentActivity() {
         }
     }
 
+    //Hides all letters. Used to reset board to a state where the player must select an
+    //initial letter to start swapping around.
     private fun toggleGridVis(glayout : GridLayout, rows : Int, columns : Int){
         for (i in 0 until rows) {
             for (j in 0 until columns) {
                 glayout.findViewWithTag<Button>(i * columns + j).isEnabled = false
             }
         }
+    }
 
-    }/* References for how 'f' should work
-            5    0    5    0    5    0    5    0
-                           a b b a b
-                           a a f b b
-                           b a b b a
-                           b a b b a
-                           a b b a b
-                              /|\
-                               ^
-                               f
-                              /|\
-        b b a b a          a b b a b          b a b b a
-        b b a b a          a b b a b          b a b b a
-        a f b b a <- <f <- a a f b b -> f> -> b a a f b
-        a b b a b          b a b b a          a b a b b
-        a b b a b          b a b b a          a b a b b
-                              \|/
-                               f
-                               V
-                              \|/
-                           b a b b a
-                           a b b a b
-                           a b b a b
-                           a a f b b
-                           b a b b a
-
-         a a d b a          a _ d a a
-         d b c f b -> <f -> d c f b _
-         a b c b a          b c b a a
-
-                  a a d _ b
-         -> f> -> d _ b c f
-                  a a b c b
-         */
-
+    //Moves every letter on the grid one space in a specified direction. Any letters
+    //that would go off the grid instead loop back to the otherside.
+    //Used by 'f'
     private fun cycleGridInDirection(glayout : GridLayout, rows : Int, columns : Int, direction : Int){
         //0 = no move, 1 = right, 2 = up, -1 = left, -2 = down
         if (direction == -1) {
@@ -404,6 +428,221 @@ class GameActivity : ComponentActivity() {
         }
     }
 
+    //Cycles all letters in a single row or column towards or away from a specified letter's
+    //position. 'k' uses this to move one letter to the grid's edge then move the rest closer
+    //to it. 'g' will use this to do the exact opposite.
+    //Also used by 'l' and 'm' which work similar to 'k' and 'g' respectively.
+    //Note a special case where kicking or grabbing a 'd' deletes everything between the
+    //destination and starting point.
+    private fun cycleGridAboutCoord(glayout: GridLayout, rows : Int, columns : Int, coord: Int, direction: Int, inwards : Boolean){
+        if (direction == 1) {
+            var ltr = glayout.findViewWithTag<Button>(coord + 1).text[0]
+            var drow = false
+            if (ltr == 'd') {
+                drow = true
+            }
+            if (inwards) {
+                for (i in columns - (coord % columns) - 1 downTo 1) {
+                    if (drow) {
+                        if (i == columns - (coord % columns) - 1) {
+                            glayout.findViewWithTag<Button>(coord + i).text = ltr.toString()
+                        }
+                        else {
+                            glayout.findViewWithTag<Button>(coord + i).text = "_"
+                        }
+                    }
+                    else {
+                        val tmp = glayout.findViewWithTag<Button>(coord + i).text[0]
+                        if (tmp != 'd') {
+                            glayout.findViewWithTag<Button>(coord + i).text = ltr.toString()
+                            ltr = tmp
+                        }
+                        else {
+                            ltr = '_'
+                        }
+                    }
+                }
+            }
+            else {
+                for (i in 1..< columns - (coord % columns) - 1) {
+                    if (drow) {
+                        if (i == 1) {
+                            glayout.findViewWithTag<Button>(coord + i).text = ltr.toString()
+                        }
+                        else {
+                            glayout.findViewWithTag<Button>(coord + i).text = "_"
+                        }
+                    }
+                    else {
+                        val tmp = glayout.findViewWithTag<Button>(coord + i).text[0]
+                        if (tmp != 'd') {
+                            glayout.findViewWithTag<Button>(coord + i).text = ltr.toString()
+                            ltr = tmp
+                        }
+                        else {
+                            ltr = '_'
+                        }
+                    }
+                }
+            }
+        }
+        else if (direction == -1) {
+            var ltr = glayout.findViewWithTag<Button>(coord - 1).text[0]
+            var drow = false
+            if (ltr == 'd') {
+                drow = true
+            }
+            if (inwards) {
+                for (i in (coord % columns) downTo 1) {
+                    if (drow) {
+                        if (i == (coord % columns)) {
+                            glayout.findViewWithTag<Button>(coord - i).text = ltr.toString()
+                        }
+                        else {
+                            glayout.findViewWithTag<Button>(coord - i).text = "_"
+                        }
+                    }
+                    else {
+                        val tmp = glayout.findViewWithTag<Button>(coord - i).text[0]
+                        if (tmp != 'd') {
+                            glayout.findViewWithTag<Button>(coord - i).text = ltr.toString()
+                            ltr = tmp
+                        }
+                        else {
+                            ltr = '_'
+                        }
+                    }
+                }
+            }
+            else {
+                for (i in 1..<(coord % columns)) {
+                    if (drow) {
+                        if (i == 1) {
+                            glayout.findViewWithTag<Button>(coord - i).text = ltr.toString()
+                        }
+                        else {
+                            glayout.findViewWithTag<Button>(coord - i).text = "_"
+                        }
+                    }
+                    else {
+                        val tmp = glayout.findViewWithTag<Button>(coord - i).text[0]
+                        if (tmp != 'd') {
+                            glayout.findViewWithTag<Button>(coord - i).text = ltr.toString()
+                            ltr = tmp
+                        }
+                        else {
+                            ltr = '_'
+                        }
+                    }
+                }
+            }
+        }
+        else if (direction == 2) {
+            var ltr = glayout.findViewWithTag<Button>(coord - columns).text[0]
+            var dcol = false
+            if (ltr == 'd') {
+                dcol = true
+            }
+            if (inwards) {
+                for (i in (coord / columns) downTo 1) {
+                    if (dcol) {
+                        if (i == (coord / columns)) {
+                            glayout.findViewWithTag<Button>(coord - i * columns).text = ltr.toString()
+                        }
+                        else {
+                            glayout.findViewWithTag<Button>(coord - i * columns).text = "_"
+                        }
+                    }
+                    else {
+                        val tmp = glayout.findViewWithTag<Button>(coord - i * columns).text[0]
+                        if (tmp != 'd') {
+                            glayout.findViewWithTag<Button>(coord - i * columns).text = ltr.toString()
+                            ltr = tmp
+                        }
+                        else {
+                            ltr = '_'
+                        }
+                    }
+                }
+            }
+            else {
+                for (i in 1..<(coord / columns)) {
+                    if (dcol) {
+                        if (i == 1) {
+                            glayout.findViewWithTag<Button>(coord - i * columns).text = ltr.toString()
+                        }
+                        else {
+                            glayout.findViewWithTag<Button>(coord - i * columns).text = "_"
+                        }
+                    }
+                    else {
+                        val tmp = glayout.findViewWithTag<Button>(coord - i * columns).text[0]
+                        if (tmp != 'd') {
+                            glayout.findViewWithTag<Button>(coord - i * columns).text = ltr.toString()
+                            ltr = tmp
+                        }
+                        else {
+                            ltr = '_'
+                        }
+                    }
+                }
+            }
+        }
+        else if (direction == -2) {
+            var ltr = glayout.findViewWithTag<Button>(coord + columns).text[0]
+            var dcol = false
+            if (ltr == 'd') {
+                dcol = true
+            }
+            if (inwards) {
+                for (i in rows - (coord / columns) - 1 downTo 1) {
+                    if (dcol) {
+                        if (i == rows - (coord / columns) + 1) {
+                            glayout.findViewWithTag<Button>(coord + i * columns).text = ltr.toString()
+                        }
+                        else {
+                            glayout.findViewWithTag<Button>(coord + i * columns).text = "_"
+                        }
+                    }
+                    else {
+                        val tmp = glayout.findViewWithTag<Button>(coord + i * columns).text[0]
+                        if (tmp != 'd') {
+                            glayout.findViewWithTag<Button>(coord + i * columns).text = ltr.toString()
+                            ltr = tmp
+                        }
+                        else {
+                            ltr = '_'
+                        }
+                    }
+                }
+            }
+            else {
+                for (i in 1..< rows - (coord / columns)) {
+                    if (dcol) {
+                        if (i == 1) {
+                            glayout.findViewWithTag<Button>(coord + i * columns).text = ltr.toString()
+                        }
+                        else {
+                            glayout.findViewWithTag<Button>(coord + i * columns).text = "_"
+                        }
+                    }
+                    else {
+                        val tmp = glayout.findViewWithTag<Button>(coord + i * columns).text[0]
+                        if (tmp != 'd') {
+                            glayout.findViewWithTag<Button>(coord + i * columns).text = ltr.toString()
+                            ltr = tmp
+                        }
+                        else {
+                            ltr = '_'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //Makes all interactable letters interactable
+    //For reference, the only non-interactable letters are '_', 'a', 'd', and 'i'
     private fun resetGridVis(glayout : GridLayout, rows : Int, columns : Int){
         for (i in 0 until rows) {
             for (j in 0 until columns) {
