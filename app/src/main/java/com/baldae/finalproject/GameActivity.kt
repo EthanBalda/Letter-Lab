@@ -3,7 +3,6 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -30,10 +29,40 @@ class GameActivity : ComponentActivity() {
             onBackPressedDispatcher.onBackPressed() // Navigate back to Level Select
         }
 
-        val levelList = arrayOf("aabab",
+        /*val levelList = arrayOf("aabab",
                                 "aabab\naabab",
                                 "ababa\nbacab\nbbcbb",
-                                "aca")
+                                "aba\nbcb\naba",
+                                "abce\ncbca",
+                                "abbab\nabbab\naafbb\naabbb\naabbb")*/
+        /*
+            5    0    5    0    5    0    5    0
+                           a b b a b
+                           a a f b b
+                           b a b b a
+                           b a b b a
+                           a b b a b
+                              /|\
+                               ^
+                               f
+                              /|\
+        b b a b a          a b b a b          b a b b a
+        b b a b a          a b b a b          b a b b a
+        a f b b a <- <f <- a a f b b -> f> -> b a a f b
+        a b b a b          b a b b a          a b a b b
+        a b b a b          b a b b a          a b a b b
+                              \|/
+                               f
+                               V
+                              \|/
+                           b a b b a
+                           a b b a b
+                           a b b a b
+                           a a f b b
+                           b a b b a
+         */
+
+        val levelList = arrayOf("abbab\nabbab\naafbb\nbabba\nbabba", "aca")
         val generateButtonGrid: Button = findViewById(R.id.generateButtonGrid)
         val gridLayout: GridLayout = findViewById(R.id.gridLayout)
         var tog = false
@@ -99,7 +128,7 @@ class GameActivity : ComponentActivity() {
                                 gridLayout.findViewWithTag<Button>(cTag).isEnabled = true
                                 tog = true
                                 when(text[0]) {
-                                    'b', 'e', 'f', 'k' -> {
+                                    'b', 'e', 'f', 'k', 'l', 'm' -> {
                                         var nTag = cTag - 1
                                         if (nTag > -1 && nTag / columns == cTag / columns) {
                                             gridLayout.findViewWithTag<Button>(nTag).isEnabled = true
@@ -153,10 +182,15 @@ class GameActivity : ComponentActivity() {
                                             gridLayout.findViewWithTag<Button>(nTag).isEnabled = true
                                         }
                                     }
+                                    'g' -> {
+                                        showGGridVis(gridLayout, rows, columns, cTag)
+                                    }
+                                    'h' -> {
+                                        showAllGridVis(gridLayout, rows, columns)
+                                    }
                                 }
                             }
                             else {
-                                //toggleGridVis(gridLayout, rows, columns)
                                 if (cTag == tag as Int) {
                                     tog = false
                                     resetGridVis(gridLayout, rows, columns)
@@ -171,6 +205,42 @@ class GameActivity : ComponentActivity() {
                                             tog = false
                                             resetGridVis(gridLayout, rows, columns)
                                         }
+                                        else {
+                                            gridLayout.findViewWithTag<Button>(cTag).text = "_"
+                                            tog = false
+                                            resetGridVis(gridLayout, rows, columns)
+                                        }
+                                    }
+                                    'e' -> {
+                                        gridLayout.findViewWithTag<Button>(cTag).text = text
+                                        text = "_"
+                                        tog = false
+                                        resetGridVis(gridLayout, rows, columns)
+                                    }
+                                    'f' -> {
+                                        val dir : Int
+                                        if (tag == cTag + 1) dir = 1
+                                        else if (tag == cTag - 1) dir = -1
+                                        else if (tag == cTag + columns) dir = -2
+                                        else dir = 2
+                                        cycleGridInDirection(gridLayout, rows, columns, dir)
+                                        tog = false
+                                        resetGridVis(gridLayout, rows, columns)
+                                    }
+                                    'g' -> {
+
+                                    }
+                                    'h' -> {
+
+                                    }
+                                    'k' -> {
+
+                                    }
+                                    'l' -> {
+
+                                    }
+                                    'm' -> {
+
                                     }
                                 }
                                 //Toast.makeText(this@GameActivity, "Checking Win", Toast.LENGTH_SHORT).show()
@@ -202,7 +272,26 @@ class GameActivity : ComponentActivity() {
         }
     }
 
-    fun toggleGridVis(glayout : GridLayout, rows : Int, columns : Int){
+    private fun showGGridVis(glayout : GridLayout, rows : Int, columns : Int, coord : Int){
+        for (i in 0 until rows) {
+            for (j in 0 until columns) {
+                if (i == coord / columns || j == coord % columns) {
+                    val ltr = glayout.findViewWithTag<Button>(i * columns + j).text[0]
+                    glayout.findViewWithTag<Button>(i * columns + j).isEnabled = (ltr != '_' && ltr != 'i')
+                }
+            }
+        }
+    }
+
+    private fun showAllGridVis(glayout : GridLayout, rows : Int, columns : Int){
+        for (i in 0 until rows) {
+            for (j in 0 until columns) {
+                glayout.findViewWithTag<Button>(i * columns + j).isEnabled = true
+            }
+        }
+    }
+
+    private fun toggleGridVis(glayout : GridLayout, rows : Int, columns : Int){
         for (i in 0 until rows) {
             for (j in 0 until columns) {
                 glayout.findViewWithTag<Button>(i * columns + j).isEnabled = false
@@ -210,19 +299,68 @@ class GameActivity : ComponentActivity() {
         }
     }
 
-    fun resetGridVis(glayout : GridLayout, rows : Int, columns : Int){
-        for (i in 0 until rows) {
-            for (j in 0 until columns) {
-                val ltr = glayout.findViewWithTag<Button>(i * columns + j).text[0]
-                if (ltr != 'a' && ltr != 'd' && ltr != 'i')
-                    glayout.findViewWithTag<Button>(i * columns + j).isEnabled = true
-                else
-                    glayout.findViewWithTag<Button>(i * columns + j).isEnabled = false
+    private fun cycleGridInDirection(glayout : GridLayout, rows : Int, columns : Int, direction : Int){
+        //0 = no move, 1 = right, 2 = up, -1 = left, -2 = down
+        if (direction == -1) {
+            Toast.makeText(this@GameActivity, "Left", Toast.LENGTH_SHORT).show()
+            for (i in 0..< rows) {
+                val sltr = glayout.findViewWithTag<Button>(i * columns).text[0]
+                for (j in 0..< columns) {
+                    if (j < columns - 1)
+                        glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>(i * columns + j + 1).text
+                    else
+                        glayout.findViewWithTag<Button>(i * columns + j).text = sltr.toString()
+                }
+            }
+        }
+        else if (direction == 1) {
+            Toast.makeText(this@GameActivity, "Right", Toast.LENGTH_SHORT).show()
+            for (i in 0..< rows) {
+                val sltr = glayout.findViewWithTag<Button>(i * columns + columns - 1).text[0]
+                for (j in (columns - 1) downTo 0) {
+                    if (j > 0)
+                        glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>(i * columns + j - 1).text
+                    else
+                        glayout.findViewWithTag<Button>(i * columns).text = sltr.toString()
+                }
+            }
+        }
+        else if (direction == 2) {
+            Toast.makeText(this@GameActivity, "Up", Toast.LENGTH_SHORT).show()
+            for (j in 0..< columns) {
+                val sltr = glayout.findViewWithTag<Button>(j).text[0]
+                for (i in 0..< rows) {
+                    if (i < rows - 1)
+                        glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>((i + 1) * columns + j).text
+                    else
+                        glayout.findViewWithTag<Button>(i * columns + j).text = sltr.toString()
+                }
+            }
+        }
+        else if (direction == -2) {
+            Toast.makeText(this@GameActivity, "Down", Toast.LENGTH_SHORT).show()
+            for (j in 0..< columns) {
+                val sltr = glayout.findViewWithTag<Button>(rows * (columns - 1) + j).text[0]
+                for (i in (rows - 1) downTo 0) {
+                    if (i > 0)
+                        glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>((i - 1) * columns + j).text
+                    else
+                        glayout.findViewWithTag<Button>(j).text = sltr.toString()
+                }
             }
         }
     }
 
-    fun winCheck(glayout : GridLayout, rows : Int, columns : Int) : Boolean {
+    private fun resetGridVis(glayout : GridLayout, rows : Int, columns : Int){
+        for (i in 0 until rows) {
+            for (j in 0 until columns) {
+                val ltr = glayout.findViewWithTag<Button>(i * columns + j).text[0]
+                glayout.findViewWithTag<Button>(i * columns + j).isEnabled = (ltr != '_' && ltr != 'a' && ltr != 'd' && ltr != 'i')
+            }
+        }
+    }
+
+    private fun winCheck(glayout : GridLayout, rows : Int, columns : Int) : Boolean {
         //Horizontal
         for (i in 0 until rows) {
             var compH = '_'
@@ -234,17 +372,17 @@ class GameActivity : ComponentActivity() {
                 }
                 else if (ltr != '_') {
                     if (upH == 0) {
-                        if (compH.compareTo(ltr) < 0) {
+                        if (compH < ltr) {
                             upH = -1
                             compH = ltr
                         }
-                        else if (compH.compareTo(ltr) > 0) {
+                        else if (compH > ltr) {
                             upH = 1
                             compH = ltr
                         }
                     }
                     else if (upH == -1) {
-                        if (compH.compareTo(ltr) > 0) {
+                        if (compH > ltr) {
                             Toast.makeText(this@GameActivity, "up then down", Toast.LENGTH_SHORT).show()
                             return false
                         }
@@ -253,7 +391,7 @@ class GameActivity : ComponentActivity() {
                         }
                     }
                     else{
-                        if (compH.compareTo(ltr) < 0) {
+                        if (compH < ltr) {
                             Toast.makeText(this@GameActivity, "down then up", Toast.LENGTH_SHORT).show()
                             return false
                         }
@@ -277,17 +415,17 @@ class GameActivity : ComponentActivity() {
                 }
                 else if (ltr != '_') {
                     if (upH == 0) {
-                        if (compH.compareTo(ltr) < 0) {
+                        if (compH < ltr) {
                             upH = -1
                             compH = ltr
                         }
-                        else if (compH.compareTo(ltr) > 0) {
+                        else if (compH > ltr) {
                             upH = 1
                             compH = ltr
                         }
                     }
                     else if (upH == -1) {
-                        if (compH.compareTo(ltr) > 0) {
+                        if (compH > ltr) {
                             Toast.makeText(this@GameActivity, "up then down", Toast.LENGTH_SHORT).show()
                             return false
                         }
@@ -296,7 +434,7 @@ class GameActivity : ComponentActivity() {
                         }
                     }
                     else{
-                        if (compH.compareTo(ltr) < 0) {
+                        if (compH < ltr) {
                             Toast.makeText(this@GameActivity, "down then up", Toast.LENGTH_SHORT).show()
                             return false
                         }
