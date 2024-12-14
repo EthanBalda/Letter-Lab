@@ -34,35 +34,11 @@ class GameActivity : ComponentActivity() {
                                 "ababa\nbacab\nbbcbb",
                                 "aba\nbcb\naba",
                                 "abce\ncbca",
-                                "abbab\nabbab\naafbb\naabbb\naabbb")*/
-        /*
-            5    0    5    0    5    0    5    0
-                           a b b a b
-                           a a f b b
-                           b a b b a
-                           b a b b a
-                           a b b a b
-                              /|\
-                               ^
-                               f
-                              /|\
-        b b a b a          a b b a b          b a b b a
-        b b a b a          a b b a b          b a b b a
-        a f b b a <- <f <- a a f b b -> f> -> b a a f b
-        a b b a b          b a b b a          a b a b b
-        a b b a b          b a b b a          a b a b b
-                              \|/
-                               f
-                               V
-                              \|/
-                           b a b b a
-                           a b b a b
-                           a b b a b
-                           a a f b b
-                           b a b b a
-         */
+                                "abbab\nabbab\naafbb\nbabba\nbabba",
+                                "abdb\ndbca\nabcf")*/
 
-        val levelList = arrayOf("abbab\nabbab\naafbb\nbabba\nbabba", "aca")
+
+        val levelList = arrayOf("abdb\ndbca\nabcf", "aca")
         val generateButtonGrid: Button = findViewById(R.id.generateButtonGrid)
         val gridLayout: GridLayout = findViewById(R.id.gridLayout)
         var tog = false
@@ -297,7 +273,41 @@ class GameActivity : ComponentActivity() {
                 glayout.findViewWithTag<Button>(i * columns + j).isEnabled = false
             }
         }
-    }
+
+    }/* References for how 'f' should work
+            5    0    5    0    5    0    5    0
+                           a b b a b
+                           a a f b b
+                           b a b b a
+                           b a b b a
+                           a b b a b
+                              /|\
+                               ^
+                               f
+                              /|\
+        b b a b a          a b b a b          b a b b a
+        b b a b a          a b b a b          b a b b a
+        a f b b a <- <f <- a a f b b -> f> -> b a a f b
+        a b b a b          b a b b a          a b a b b
+        a b b a b          b a b b a          a b a b b
+                              \|/
+                               f
+                               V
+                              \|/
+                           b a b b a
+                           a b b a b
+                           a b b a b
+                           a a f b b
+                           b a b b a
+
+         a a d b a          a _ d a a
+         d b c f b -> <f -> d c f b _
+         a b c b a          b c b a a
+
+                  a a d _ b
+         -> f> -> d _ b c f
+                  a a b c b
+         */
 
     private fun cycleGridInDirection(glayout : GridLayout, rows : Int, columns : Int, direction : Int){
         //0 = no move, 1 = right, 2 = up, -1 = left, -2 = down
@@ -306,10 +316,20 @@ class GameActivity : ComponentActivity() {
             for (i in 0..< rows) {
                 val sltr = glayout.findViewWithTag<Button>(i * columns).text[0]
                 for (j in 0..< columns) {
-                    if (j < columns - 1)
-                        glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>(i * columns + j + 1).text
-                    else
-                        glayout.findViewWithTag<Button>(i * columns + j).text = sltr.toString()
+                    if (j < columns - 1) {
+                        if (glayout.findViewWithTag<Button>(i * columns + j + 1).text[0] == 'd')
+                            glayout.findViewWithTag<Button>(i * columns + j).text = "_"
+                        else if (glayout.findViewWithTag<Button>(i * columns + j).text[0] != 'd')
+                            glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>(i * columns + j + 1).text
+                    }
+                    else {
+                        if (sltr == 'd') {
+                            glayout.findViewWithTag<Button>(i * columns + j).text = "_"
+                        }
+                        else if (glayout.findViewWithTag<Button>(i * columns + j).text[0] != 'd') {
+                            glayout.findViewWithTag<Button>(i * columns + j).text = sltr.toString()
+                        }
+                    }
                 }
             }
         }
@@ -318,10 +338,21 @@ class GameActivity : ComponentActivity() {
             for (i in 0..< rows) {
                 val sltr = glayout.findViewWithTag<Button>(i * columns + columns - 1).text[0]
                 for (j in (columns - 1) downTo 0) {
-                    if (j > 0)
-                        glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>(i * columns + j - 1).text
-                    else
-                        glayout.findViewWithTag<Button>(i * columns).text = sltr.toString()
+                    if (j > 0) {
+                        //glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>(i * columns + j - 1).text
+                        if (glayout.findViewWithTag<Button>(i * columns + j - 1).text[0] == 'd')
+                            glayout.findViewWithTag<Button>(i * columns + j).text = "_"
+                        else if (glayout.findViewWithTag<Button>(i * columns + j).text[0] != 'd')
+                            glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>(i * columns + j - 1).text
+                    }
+                    else {
+                        if (sltr == 'd') {
+                            glayout.findViewWithTag<Button>(i * columns).text = "_"
+                        }
+                        else if (glayout.findViewWithTag<Button>(i * columns).text[0] != 'd') {
+                            glayout.findViewWithTag<Button>(i * columns).text = sltr.toString()
+                        }
+                    }
                 }
             }
         }
@@ -330,22 +361,44 @@ class GameActivity : ComponentActivity() {
             for (j in 0..< columns) {
                 val sltr = glayout.findViewWithTag<Button>(j).text[0]
                 for (i in 0..< rows) {
-                    if (i < rows - 1)
-                        glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>((i + 1) * columns + j).text
-                    else
-                        glayout.findViewWithTag<Button>(i * columns + j).text = sltr.toString()
+                    if (i < rows - 1) {
+                        //glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>((i + 1) * columns + j).text
+                        if (glayout.findViewWithTag<Button>((i + 1) * columns + j).text[0] == 'd')
+                            glayout.findViewWithTag<Button>(i * columns + j).text = "_"
+                        else if (glayout.findViewWithTag<Button>(i * columns + j).text[0] != 'd')
+                            glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>((i + 1) * columns + j).text
+                    }
+                    else {
+                        if (sltr == 'd') {
+                            glayout.findViewWithTag<Button>(i * columns + j).text = "_"
+                        }
+                        else if (glayout.findViewWithTag<Button>(i * columns + j).text[0] != 'd') {
+                            glayout.findViewWithTag<Button>(i * columns + j).text = sltr.toString()
+                        }
+                    }
                 }
             }
         }
         else if (direction == -2) {
             Toast.makeText(this@GameActivity, "Down", Toast.LENGTH_SHORT).show()
             for (j in 0..< columns) {
-                val sltr = glayout.findViewWithTag<Button>(rows * (columns - 1) + j).text[0]
+                val sltr = glayout.findViewWithTag<Button>((rows - 1) * columns + j).text[0]
                 for (i in (rows - 1) downTo 0) {
-                    if (i > 0)
-                        glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>((i - 1) * columns + j).text
-                    else
-                        glayout.findViewWithTag<Button>(j).text = sltr.toString()
+                    if (i > 0) {
+                        //glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>((i - 1) * columns + j).text
+                        if (glayout.findViewWithTag<Button>((i - 1) * columns + j).text[0] == 'd')
+                            glayout.findViewWithTag<Button>(i * columns + j).text = "_"
+                        else if (glayout.findViewWithTag<Button>(i * columns + j).text[0] != 'd')
+                            glayout.findViewWithTag<Button>(i * columns + j).text = glayout.findViewWithTag<Button>((i - 1) * columns + j).text
+                    }
+                    else {
+                        if (sltr == 'd') {
+                            glayout.findViewWithTag<Button>(j).text = "_"
+                        }
+                        else if (glayout.findViewWithTag<Button>(j).text[0] != 'd') {
+                            glayout.findViewWithTag<Button>(j).text = sltr.toString()
+                        }
+                    }
                 }
             }
         }
