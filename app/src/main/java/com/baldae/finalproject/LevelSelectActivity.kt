@@ -11,7 +11,32 @@ import androidx.appcompat.app.AppCompatActivity
 class LevelSelectActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
-    private val levelList = arrayOf("aabab", "aabab\naabab", "ababa\nbacab\nbbcbb", "aca")
+    private val levelList = arrayOf("aabab",
+        "aabab\naabab",
+        "ababa\nbacab\nbbcbb",
+        "aba\nbcb\naba",
+        "abac\ncdab",
+        "ccbcc\nbbabb\ncadac\nbcacb",
+        "abce\ncbca",
+        "bcb\neae\nbcb",
+        "abbab\nabbab\naafbb\nbabba\nbabba",
+        "abdb\ndbca\nabcf",
+        "gaabcab\nbcbdaag",
+        "aaab\nbaaa\nabaa\naaba\ngccg",
+        "bac\nbbb\nghc\naca\nbbc",
+        "bbcb\nbheb\nbcdb\neaae",
+        "jcbcj\ncbabc\nbajab\ncbacb\njcbcj",
+        "facaj\nedade\njacaf",
+        "kcbc\nbcab\njeje\ncbck",
+        "kdefk\njcbfk",
+        "bdbcdbd\ndbdbbdb\nbdbadbd\ncbalabc\ndbdabdb\nbdbbdbd\ndbdcbdb",
+        "ljjjaah\nekfgbba\naaaabbc",
+        "dbdcbdb\nbdbbdbd\ndbdabdb\ncbamabc\nbdbadbd\ndbdbbdb\nbdbcdbd",
+        "aabbc\nabcde\nbcdee\nbmebb\naaaaa",
+        "gaaaaad\nkdaaaaa\nabafaba",
+        "abcd\nefgh\njklm\nhgfe\ndcba",
+        "ggaaagg\ndeeeeed\nhkhkhkh"
+    )
     private val totalLevels = levelList.size
 
     override fun onCreate(savedInstanceState: Bundle?) {
