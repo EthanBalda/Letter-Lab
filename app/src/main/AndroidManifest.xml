@@ -37,6 +37,8 @@
         <activity android:name=".DictionaryActivity" />
         <activity android:name=".LevelSelectActivity" />
 
+
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
