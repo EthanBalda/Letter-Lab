@@ -67,9 +67,15 @@ class LevelSelectActivity : AppCompatActivity() {
 
         for (i in 0 until totalLevels) {
             val levelState = sharedPreferences.getInt("level_$i", 0)
+            val lowestMoves = sharedPreferences.getInt("level_${i + 1}_lowest_moves", -1)
+
 
             val levelButton = Button(this).apply {
-                text = if (levelState == 2) "Level ${i + 1} ✓" else "Level ${i + 1}"
+                text = if (lowestMoves >= 0) {
+                    "Level ${i + 1}\nLowest Moves: $lowestMoves"
+                } else {
+                    "Level ${i + 1}"
+                }
                 isEnabled = levelState != 0 // Enable if unlocked or beaten
 
                 if (levelState == 0) {

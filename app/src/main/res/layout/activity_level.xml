@@ -53,5 +53,14 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/moveCounterTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Moves: 0"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:padding="8dp" />
+
 </LinearLayout>
 

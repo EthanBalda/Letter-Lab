@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
@@ -20,6 +21,9 @@ class GameActivity : ComponentActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private var level = 0
     private val totalLevels = 25
+    private var moveCount = 0
+    private lateinit var moveCounterTextView: TextView
+
 
     private lateinit var backgroundImageView: ImageView
     private val unsplashApiKey = "4o2U9PpZ47LPEJuqLAA25ExeCyafbTJTq5QAPF_hbkk"
@@ -34,7 +38,10 @@ class GameActivity : ComponentActivity() {
         level = intent.getIntExtra("level", 0)
         backgroundImageView = findViewById(R.id.backgroundImageView)
 
-        fetchRandomBackground("landscape")
+        moveCounterTextView = findViewById(R.id.moveCounterTextView)
+
+
+        fetchRandomBackground("")
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert) // Back arrow icon
@@ -226,9 +233,11 @@ class GameActivity : ComponentActivity() {
                                     }
                                     'g' -> {
                                         showGGridVis(gridLayout, rows, columns, cTag)
+                                        incrementMoveCounter()
                                     }
                                     'h' -> {
                                         showAllGridVis(gridLayout, rows, columns)
+                                        incrementMoveCounter()
                                     }
                                 }
                             }
@@ -237,6 +246,7 @@ class GameActivity : ComponentActivity() {
                                 if (cTag == tag as Int) {
                                     tog = false
                                     resetGridVis(gridLayout, rows, columns)
+                                    incrementMoveCounter()
                                     return@setOnClickListener
                                 }
                                 when(cBtn) {
@@ -247,11 +257,13 @@ class GameActivity : ComponentActivity() {
                                             text = "" + tmp
                                             tog = false
                                             resetGridVis(gridLayout, rows, columns)
+                                            incrementMoveCounter()
                                         }
                                         else if (text[0] == 'd'){
                                             gridLayout.findViewWithTag<Button>(cTag).text = "_"
                                             tog = false
                                             resetGridVis(gridLayout, rows, columns)
+                                            incrementMoveCounter()
                                         }
                                     }
                                     'e' -> {
@@ -260,6 +272,7 @@ class GameActivity : ComponentActivity() {
                                             text = "_"
                                             tog = false
                                             resetGridVis(gridLayout, rows, columns)
+                                            incrementMoveCounter()
                                         }
                                     }
                                     'f' -> {
@@ -271,6 +284,7 @@ class GameActivity : ComponentActivity() {
                                         cycleGridInDirection(gridLayout, rows, columns, dir)
                                         tog = false
                                         resetGridVis(gridLayout, rows, columns)
+                                        incrementMoveCounter()
                                     }
                                     'g' -> {
                                         if (text[0] != '_') {
@@ -290,6 +304,7 @@ class GameActivity : ComponentActivity() {
                                             cycleGridAboutCoord(gridLayout, rows, columns, cTag, tag as Int, dir, false)
                                             tog = false
                                             resetGridVis(gridLayout, rows, columns)
+                                            incrementMoveCounter()
                                         }
                                     }
                                     'h' -> {
@@ -314,6 +329,7 @@ class GameActivity : ComponentActivity() {
                                             }
                                             tog = false
                                             resetGridVis(gridLayout, rows, columns)
+                                            incrementMoveCounter()
                                         }
                                     }
                                     'k' -> {
@@ -334,6 +350,7 @@ class GameActivity : ComponentActivity() {
                                             cycleGridAboutCoord(gridLayout, rows, columns, cTag, -1, dir, true)
                                             tog = false
                                             resetGridVis(gridLayout, rows, columns)
+                                            incrementMoveCounter()
                                         }
                                     }
                                     'l' -> {
@@ -348,6 +365,7 @@ class GameActivity : ComponentActivity() {
                                             cycleGridAboutCoord(gridLayout, rows, columns, cTag, -1, -2, true)
                                         tog = false
                                         resetGridVis(gridLayout, rows, columns)
+                                        incrementMoveCounter()
                                     }
                                     'm' -> {
                                         //Mechanically, this a very picky 'g'. It always grabs all four edges
@@ -361,6 +379,7 @@ class GameActivity : ComponentActivity() {
                                             cycleGridAboutCoord(gridLayout, rows, columns, cTag, rows * (columns - 1) + cTag % columns, -2, false)
                                         tog = false
                                         resetGridVis(gridLayout, rows, columns)
+                                        incrementMoveCounter()
                                     }
                                 }
                                 //Toast.makeText(this@GameActivity, "Checking Win", Toast.LENGTH_SHORT).show()
@@ -370,7 +389,7 @@ class GameActivity : ComponentActivity() {
                                     level++
                                     generateButtonGrid.visibility = Button.VISIBLE
                                     markLevelComplete()
-
+                                    resetMoveCounter()
                                 }
                             }
                         }
@@ -409,17 +428,34 @@ class GameActivity : ComponentActivity() {
 
     private fun markLevelComplete() {
         val editor = sharedPreferences.edit()
+        val currentLowestMoves = sharedPreferences.getInt("level_${level}_lowest_moves", Int.MAX_VALUE)
+
+        // Save the lowest move count if it's better than the previous record
+        if (moveCount < currentLowestMoves) {
+            editor.putInt("level_${level}_lowest_moves", moveCount)
+        }
+
         editor.putInt("level_$level", 2) // Mark the current level as beaten
 
         // Unlock the next level if it exists
-
         if (level + 1 < totalLevels) {
-            editor.putInt("level_${level}", 1) // Unlock the next level
+            editor.putInt("level_${level + 1}", 1) // Unlock the next level
         }
 
         editor.apply()
-        Toast.makeText(this, "Level ${level} completed!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Level ${level + 1} completed!", Toast.LENGTH_SHORT).show()
         finish() // Go back to the level select screen
+    }
+
+
+    private fun incrementMoveCounter() {
+        moveCount++
+        moveCounterTextView.text = "Moves: $moveCount"
+    }
+
+    private fun resetMoveCounter() {
+        moveCount = 0
+        moveCounterTextView.text = "Moves: 0"
     }
 
     //Shows what letters the 'g' letter can grab. Must be same row or column as 'g'
