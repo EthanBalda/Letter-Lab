@@ -1,21 +1,15 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# LetterLab release rules.
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Keep readable crash traces in Play Console.
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
-
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# kotlinx.serialization: the library ships consumer rules, but pin our
+# level-catalog models explicitly so R8 full mode can never strip the
+# generated serializers that levels.json parsing depends on.
+-keepclassmembers @kotlinx.serialization.Serializable class com.baldae.letterlab.data.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.baldae.letterlab.data.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}

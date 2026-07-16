@@ -1,0 +1,355 @@
+{
+  "worlds": [
+    {
+      "id": 1,
+      "name": "Foundations",
+      "levels": [
+        {
+          "id": 1,
+          "name": "First Swap",
+          "par": 1,
+          "grid": [
+            "aabab"
+          ],
+          "tutorial": {
+            "letter": "b",
+            "title": "Welcome to LetterLab",
+            "body": "A level is solved when every row and every column reads in alphabetical order — ascending or descending both count, and blanks are skipped.\n\nTap a letter to pick it up, then tap a highlighted cell to act.\n\nb • Basic — swaps places with any adjacent letter.\n\nFinish within par to earn all three stars. Undo is always free."
+          }
+        },
+        {
+          "id": 2,
+          "name": "Double Take",
+          "par": 2,
+          "grid": [
+            "aabab",
+            "aabab"
+          ]
+        },
+        {
+          "id": 3,
+          "name": "Going Long",
+          "par": 4,
+          "grid": [
+            "ababa",
+            "bacab",
+            "bbcbb"
+          ],
+          "tutorial": {
+            "letter": "c",
+            "title": "The Complex",
+            "body": "c • Complex — swaps with a letter exactly two cells away in its row or column. It can't reach adjacent letters at all."
+          }
+        },
+        {
+          "id": 4,
+          "name": "The Cross",
+          "par": 4,
+          "grid": [
+            "aba",
+            "bcb",
+            "aba"
+          ]
+        },
+        {
+          "id": 5,
+          "name": "Handle With Care",
+          "par": 4,
+          "grid": [
+            "abac",
+            "cdab"
+          ],
+          "tutorial": {
+            "letter": "d",
+            "title": "Do Not Touch",
+            "body": "d • Delete — never moves on its own, and destroys any letter that touches it. Swap into it and you're gone.\n\nSometimes losing a letter is exactly what you need."
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Reactions",
+      "levels": [
+        {
+          "id": 6,
+          "name": "Concentric",
+          "par": 11,
+          "grid": [
+            "ccbcc",
+            "bbabb",
+            "cadac",
+            "bcacb"
+          ]
+        },
+        {
+          "id": 7,
+          "name": "The Hungry One",
+          "par": 1,
+          "grid": [
+            "abce",
+            "cbca"
+          ],
+          "tutorial": {
+            "letter": "e",
+            "title": "Eat Up",
+            "body": "e • Eat — devours an adjacent cell and becomes whatever it ate. Eating a blank destroys it.\n\nIt's also the only letter that can safely swallow a d."
+          }
+        },
+        {
+          "id": 8,
+          "name": "Balanced Diet",
+          "par": 4,
+          "grid": [
+            "bcb",
+            "eae",
+            "bcb"
+          ]
+        },
+        {
+          "id": 9,
+          "name": "Full Force",
+          "par": 10,
+          "grid": [
+            "abbab",
+            "abbab",
+            "aafbb",
+            "babba",
+            "babba"
+          ],
+          "tutorial": {
+            "letter": "f",
+            "title": "Push It",
+            "body": "f • Force — shoves the entire grid one step in any direction. Letters that fall off the edge wrap around to the other side.\n\nd and i stand firm — and anything pushed into a d is destroyed."
+          }
+        },
+        {
+          "id": 10,
+          "name": "Chain Reaction",
+          "par": 2,
+          "grid": [
+            "abdb",
+            "dbca",
+            "abcf"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Kinetics",
+      "levels": [
+        {
+          "id": 11,
+          "name": "Grab and Go",
+          "par": 5,
+          "grid": [
+            "gaabcab",
+            "bcbdaag"
+          ],
+          "tutorial": {
+            "letter": "g",
+            "title": "Get Over Here",
+            "body": "g • Grab — reaches along its whole row and column, yanks a letter right next to itself, and the rest slide back to fill the gap.\n\nGrabbing a d drags it across everything in between — deleting all of it."
+          }
+        },
+        {
+          "id": 12,
+          "name": "Corner Pockets",
+          "par": 4,
+          "grid": [
+            "aaab",
+            "baaa",
+            "abaa",
+            "aaba",
+            "gccg"
+          ]
+        },
+        {
+          "id": 13,
+          "name": "Hold That Thought",
+          "par": 7,
+          "grid": [
+            "bac",
+            "bbb",
+            "ghc",
+            "aca",
+            "bbc"
+          ],
+          "tutorial": {
+            "letter": "h",
+            "title": "Heavy Lifting",
+            "body": "h • Hold — lifts any letter, anywhere on the board, above its head and out of play. Tap another cell to swap what's held.\n\nCareful: grabbing a d destroys the h and everything it was holding."
+          }
+        },
+        {
+          "id": 14,
+          "name": "Juggling Act",
+          "par": 5,
+          "grid": [
+            "bbcb",
+            "bheb",
+            "bcdb",
+            "eaae"
+          ]
+        },
+        {
+          "id": 15,
+          "name": "Leapfrog",
+          "par": 11,
+          "grid": [
+            "jcbcj",
+            "cbabc",
+            "bajab",
+            "cbacb",
+            "jcbcj"
+          ],
+          "tutorial": {
+            "letter": "j",
+            "title": "The Long Jump",
+            "body": "j • Jump — swaps with a letter exactly three cells away. The long-range cousin of b and c."
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Dynamics",
+      "levels": [
+        {
+          "id": 16,
+          "name": "Acid Bath",
+          "par": 4,
+          "grid": [
+            "facaj",
+            "edade",
+            "jacaf"
+          ]
+        },
+        {
+          "id": 17,
+          "name": "Kickoff",
+          "par": 6,
+          "grid": [
+            "kcbc",
+            "bcab",
+            "jeje",
+            "cbck"
+          ],
+          "tutorial": {
+            "letter": "k",
+            "title": "Boot Camp",
+            "body": "k • Kick — boots an adjacent letter all the way to the edge of the board; everything in between shuffles one step closer.\n\nKicking a d wipes out everything in its path."
+          }
+        },
+        {
+          "id": 18,
+          "name": "Set Pieces",
+          "par": 3,
+          "grid": [
+            "kdefk",
+            "jcbfk"
+          ]
+        },
+        {
+          "id": 19,
+          "name": "Love Letters",
+          "par": 36,
+          "grid": [
+            "bdbcdbd",
+            "dbdbbdb",
+            "bdbadbd",
+            "cbalabc",
+            "dbdabdb",
+            "bdbbdbd",
+            "dbdcbdb"
+          ],
+          "tutorial": {
+            "letter": "l",
+            "title": "Lovely",
+            "body": "l • Lovely — needs no target: the moment you tap it, it kicks all four of its neighbours to the edges of the board."
+          }
+        },
+        {
+          "id": 20,
+          "name": "Assembly Line",
+          "par": 4,
+          "grid": [
+            "ljjjaah",
+            "ekfgbba",
+            "aaaabbc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Synthesis",
+      "levels": [
+        {
+          "id": 21,
+          "name": "The Monster",
+          "par": 36,
+          "grid": [
+            "dbdcbdb",
+            "bdbbdbd",
+            "dbdabdb",
+            "cbamabc",
+            "bdbadbd",
+            "dbdbbdb",
+            "bdbcdbd"
+          ],
+          "tutorial": {
+            "letter": "m",
+            "title": "Monstrous",
+            "body": "m • Monstrous — needs no target: the moment you tap it, it drags the four edge letters of its row and column inward."
+          }
+        },
+        {
+          "id": 22,
+          "name": "Monster Mash",
+          "par": 12,
+          "grid": [
+            "aabbc",
+            "abcde",
+            "bcdee",
+            "bmebb",
+            "aaaaa"
+          ]
+        },
+        {
+          "id": 23,
+          "name": "Demolition",
+          "par": 4,
+          "grid": [
+            "gaaaaad",
+            "kdaaaaa",
+            "abafaba"
+          ]
+        },
+        {
+          "id": 24,
+          "name": "The Gauntlet",
+          "par": 6,
+          "grid": [
+            "abcd",
+            "efgh",
+            "jklm",
+            "hgfe",
+            "dcba"
+          ]
+        },
+        {
+          "id": 25,
+          "name": "Final Exam",
+          "par": 5,
+          "grid": [
+            "ggaaagg",
+            "deeeeed",
+            "hkhkhkh"
+          ]
+        }
+      ]
+    }
+  ]
+}

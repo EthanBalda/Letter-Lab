@@ -1,5 +1,3 @@
 <resources>
-    <string name="app_name">Final Project</string>
-    <string name="game_activity">Game Activity</string>
-    <string name="dictionary_activity">Dictionary Activity</string>
+    <string name="app_name">LetterLab</string>
 </resources>
