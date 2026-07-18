@@ -19,11 +19,13 @@ import com.baldae.letterlab.domain.solver.Move
 import com.baldae.letterlab.domain.solver.Solver
 import com.baldae.letterlab.ui.background.BackgroundTheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 data class GameUiState(
@@ -71,6 +73,14 @@ class GameViewModel(
     private data class HistoryEntry(val board: Board, val moves: Int, val trace: List<TileMove>)
 
     private val history = ArrayDeque<HistoryEntry>()
+
+    /**
+     * Next known-good move per board state, harvested from every solution
+     * the hint solver finds. A player following hints (or undoing along
+     * the path) gets each subsequent hint instantly instead of re-solving.
+     */
+    private val hintsByBoard = HashMap<String, Move>()
+    private var hintJob: Job? = null
 
     private val _state = MutableStateFlow(
         GameUiState(
@@ -156,6 +166,7 @@ class GameViewModel(
     }
 
     private fun commitMove(result: MoveResult) {
+        hintJob?.cancel()
         val s = _state.value
         history.addLast(HistoryEntry(s.board, s.moves, result.tileMoves))
         val newBoard = result.board
@@ -223,31 +234,58 @@ class GameViewModel(
     }
 
     /**
-     * Computes a suggested move on a background thread. Budgets are sized so
-     * even 7x7 boards answer within a few seconds on a phone.
+     * Computes a suggested move on a background thread using the solver's
+     * latency-oriented directed search; answers previously seen states
+     * (following hints, undo) instantly from [hintsByBoard].
      */
     fun requestHint() {
         val s = _state.value
         if (s.won || s.loading || s.tutorial != null || s.hintState == HintState.WORKING) return
-        _state.update { it.copy(hintState = HintState.WORKING, hint = null) }
         val board = s.board
-        viewModelScope.launch(Dispatchers.Default) {
-            val solver = Solver(bfsNodeBudget = 120_000, beamWidth = 250, maxBeamMoves = 40)
-            val move = solver.hint(board)
+        hintsByBoard[board.serialize()]?.let { known ->
+            _state.update { it.copy(hint = known, hintState = HintState.IDLE) }
+            return
+        }
+        _state.update { it.copy(hintState = HintState.WORKING, hint = null) }
+        hintJob = viewModelScope.launch(Dispatchers.Default) {
+            // maxBeamMoves must cover the longest campaign solutions (7x7
+            // boards need 50+ moves) or the beam fallback can never land.
+            val solver = Solver(
+                beamWidth = 250,
+                maxBeamMoves = 80,
+                isCancelled = { !isActive },
+            )
+            val path = solver.hintPath(board)
+            if (path != null) rememberHintPath(board, path)
             _state.update {
-                // The board may have changed while we were thinking; discard if so.
-                if (it.board != board) it.copy(hintState = HintState.IDLE)
-                else it.copy(
-                    hint = move,
-                    hintState = if (move == null) HintState.UNAVAILABLE else HintState.IDLE,
-                )
+                when {
+                    // The board may have changed while we were thinking; discard if so.
+                    it.board != board -> it.copy(hintState = HintState.IDLE)
+                    // Aborted mid-search (board changed and changed back): not proof
+                    // that the position is hopeless, so don't claim UNAVAILABLE.
+                    path == null && !isActive -> it.copy(hintState = HintState.IDLE)
+                    else -> it.copy(
+                        hint = path?.firstOrNull(),
+                        hintState = if (path.isNullOrEmpty()) HintState.UNAVAILABLE else HintState.IDLE,
+                    )
+                }
             }
+        }
+    }
+
+    /** Caches the next move for every state along a solved path. */
+    private fun rememberHintPath(start: Board, path: List<Move>) {
+        var board = start
+        for (move in path) {
+            hintsByBoard[board.serialize()] = move
+            board = GameEngine.apply(board, move.origin, move.target) ?: return
         }
     }
 
     fun undo() {
         val s = _state.value
         if (s.won || history.isEmpty()) return
+        hintJob?.cancel()
         val (board, moves, trace) = history.removeLast()
         container.soundManager.play(GameSound.UNDO)
         container.haptics.tick()
@@ -263,6 +301,8 @@ class GameViewModel(
                 canUndo = history.isNotEmpty(),
                 moveStamp = it.moveStamp + 1,
                 lastMoves = reversed,
+                hint = null,
+                hintState = HintState.IDLE,
             )
         }
         viewModelScope.launch {
@@ -277,6 +317,7 @@ class GameViewModel(
     }
 
     fun restart() {
+        hintJob?.cancel()
         history.clear()
         _state.update {
             it.copy(

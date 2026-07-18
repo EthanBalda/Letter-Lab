@@ -25,10 +25,16 @@ object AchievementBook {
         Achievement("world_3", "Kineticist", "Complete every level in Kinetics", "🧲"),
         Achievement("world_4", "Dynamo", "Complete every level in Dynamics", "⚡"),
         Achievement("world_5", "Synthesist", "Complete every level in Synthesis", "🧬"),
-        Achievement("all_clear", "Graduate", "Complete all 25 levels", "🎓"),
+        Achievement("world_6", "Sound of Silence", "Complete every level in Silence", "🤫"),
+        Achievement("world_7", "Wrecking Ball", "Complete every level in Demolition Crew", "💥"),
+        Achievement("world_8", "Transmuter", "Complete every level in Transmutation", "⚗️"),
+        Achievement("world_9", "Choreographer", "Complete every level in Choreography", "🩰"),
+        Achievement("world_10", "Ascendant", "Complete every level in Ascension", "👑"),
+        Achievement("all_clear", "Graduate", "Complete every level in the game", "🎓"),
         Achievement("efficient", "Efficient", "Clear any level within par", "🎯"),
         Achievement("minimalist", "Minimalist", "Clear any level in 2 moves or fewer", "✨"),
         Achievement("stars_30", "Star Collector", "Earn 30 stars", "⭐"),
+        Achievement("stars_120", "Constellation", "Earn 120 stars", "💫"),
         Achievement("stars_75", "Perfectionist", "Earn every star in the game", "🌟"),
         Achievement("wins_10", "Lab Regular", "Solve levels 10 times", "🥼"),
         Achievement("moves_100", "Century", "Make 100 moves", "💯"),
@@ -55,6 +61,7 @@ object AchievementBook {
         if (progress.values.any { it.stars == 3 }) deserved += "efficient"
         if (progress.values.any { (it.bestMoves ?: Int.MAX_VALUE) <= 2 }) deserved += "minimalist"
         if (totalStars >= 30) deserved += "stars_30"
+        if (totalStars >= 120) deserved += "stars_120"
         if (totalStars >= catalog.maxStars) deserved += "stars_75"
         if (stats.totalWins >= 10) deserved += "wins_10"
         if (stats.totalMoves >= 100) deserved += "moves_100"

@@ -16,14 +16,14 @@ class LevelCatalogTest {
     }
 
     @Test
-    fun `catalog has five worlds and twenty-five levels`() {
-        assertEquals(5, catalog.worlds.size)
-        assertEquals(25, catalog.allLevels.size)
+    fun `catalog has ten worlds and eighty levels`() {
+        assertEquals(10, catalog.worlds.size)
+        assertEquals(80, catalog.allLevels.size)
     }
 
     @Test
     fun `level ids are unique and sequential`() {
-        assertEquals((1..25).toList(), catalog.allLevels.map { it.id })
+        assertEquals((1..80).toList(), catalog.allLevels.map { it.id })
     }
 
     @Test
@@ -80,6 +80,6 @@ class LevelCatalogTest {
     fun `next level ordering follows catalog order`() {
         assertEquals(2, catalog.nextLevel(1)?.id)
         assertEquals(6, catalog.nextLevel(5)?.id)
-        assertEquals(null, catalog.nextLevel(25))
+        assertEquals(null, catalog.nextLevel(80))
     }
 }

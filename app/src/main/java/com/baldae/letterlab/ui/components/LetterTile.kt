@@ -15,6 +15,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,6 +27,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -194,12 +196,35 @@ fun LetterTile(
     }
 }
 
-/** A tiny read-only row of tiles for examples in the help screen. */
+/** A tiny read-only grid of tiles for examples; '\n' separates rows. */
 @Composable
 fun MiniTileRow(text: String, tileSize: Dp = 26.dp) {
-    Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-        for (ch in text) {
-            LetterTile(cell = Cell(ch), size = tileSize)
+    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+        for (line in text.split('\n')) {
+            Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+                for (ch in line) {
+                    LetterTile(cell = Cell(ch), size = tileSize)
+                }
+            }
         }
     }
+}
+
+/**
+ * A live before → after demonstration: the grid rests on [before], morphs
+ * to [after] (each changed tile pops), holds, and loops. Both strings must
+ * share one shape.
+ */
+@Composable
+fun AnimatedExample(before: String, after: String, tileSize: Dp = 26.dp) {
+    var showAfter by remember { mutableStateOf(false) }
+    LaunchedEffect(before, after) {
+        while (true) {
+            showAfter = false
+            delay(1300)
+            showAfter = true
+            delay(1900)
+        }
+    }
+    MiniTileRow(if (showAfter) after else before, tileSize)
 }

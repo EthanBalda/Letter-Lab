@@ -15,10 +15,10 @@ enum class BackgroundTheme(
     val requiresAll: Boolean = false,
 ) {
     LABORATORY("laboratory", "Laboratory", unlockWorldId = null),
-    AURORA("aurora", "Aurora", unlockWorldId = 1),
-    GEOMETRY("geometry", "Geometry", unlockWorldId = 2),
-    NEBULA("nebula", "Nebula", unlockWorldId = 3),
-    EMBER("ember", "Ember", unlockWorldId = 4),
+    AURORA("aurora", "Aurora", unlockWorldId = 2),
+    GEOMETRY("geometry", "Geometry", unlockWorldId = 4),
+    NEBULA("nebula", "Nebula", unlockWorldId = 6),
+    EMBER("ember", "Ember", unlockWorldId = 8),
     GILDED("gilded", "Gilded", unlockWorldId = null, requiresAll = true);
 
     fun unlockDescription(catalog: LevelCatalog): String = when {

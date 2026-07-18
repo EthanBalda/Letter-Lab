@@ -8,9 +8,7 @@
           "id": 1,
           "name": "First Swap",
           "par": 1,
-          "grid": [
-            "aabab"
-          ],
+          "grid": ["aabab"],
           "tutorial": {
             "letter": "b",
             "title": "Welcome to LetterLab",
@@ -21,20 +19,13 @@
           "id": 2,
           "name": "Double Take",
           "par": 2,
-          "grid": [
-            "aabab",
-            "aabab"
-          ]
+          "grid": ["aabab", "aabab"]
         },
         {
           "id": 3,
           "name": "Going Long",
           "par": 4,
-          "grid": [
-            "ababa",
-            "bacab",
-            "bbcbb"
-          ],
+          "grid": ["ababa", "bacab", "bbcbb"],
           "tutorial": {
             "letter": "c",
             "title": "The Complex",
@@ -45,25 +36,36 @@
           "id": 4,
           "name": "The Cross",
           "par": 4,
-          "grid": [
-            "aba",
-            "bcb",
-            "aba"
-          ]
+          "grid": ["aba", "bcb", "aba"]
         },
         {
           "id": 5,
+          "name": "Side Step",
+          "par": 4,
+          "grid": ["bacab", "abcba"]
+        },
+        {
+          "id": 6,
           "name": "Handle With Care",
           "par": 4,
-          "grid": [
-            "abac",
-            "cdab"
-          ],
+          "grid": ["abac", "cdab"],
           "tutorial": {
             "letter": "d",
             "title": "Do Not Touch",
             "body": "d • Delete — never moves on its own, and destroys any letter that touches it. Swap into it and you're gone.\n\nSometimes losing a letter is exactly what you need."
           }
+        },
+        {
+          "id": 7,
+          "name": "Bin Day",
+          "par": 2,
+          "grid": ["bdab", "baba"]
+        },
+        {
+          "id": 8,
+          "name": "Concentric",
+          "par": 12,
+          "grid": ["ccbcc", "bbabb", "cadac", "bcacb"]
         }
       ]
     },
@@ -72,24 +74,10 @@
       "name": "Reactions",
       "levels": [
         {
-          "id": 6,
-          "name": "Concentric",
-          "par": 11,
-          "grid": [
-            "ccbcc",
-            "bbabb",
-            "cadac",
-            "bcacb"
-          ]
-        },
-        {
-          "id": 7,
+          "id": 9,
           "name": "The Hungry One",
           "par": 1,
-          "grid": [
-            "abce",
-            "cbca"
-          ],
+          "grid": ["abcec"],
           "tutorial": {
             "letter": "e",
             "title": "Eat Up",
@@ -97,26 +85,22 @@
           }
         },
         {
-          "id": 8,
+          "id": 10,
           "name": "Balanced Diet",
           "par": 4,
-          "grid": [
-            "bcb",
-            "eae",
-            "bcb"
-          ]
+          "grid": ["bcb", "eae", "bcb"]
         },
         {
-          "id": 9,
+          "id": 11,
+          "name": "Picky Eater",
+          "par": 2,
+          "grid": ["beca", "acbb"]
+        },
+        {
+          "id": 12,
           "name": "Full Force",
-          "par": 10,
-          "grid": [
-            "abbab",
-            "abbab",
-            "aafbb",
-            "babba",
-            "babba"
-          ],
+          "par": 11,
+          "grid": ["abbab", "abbab", "aafbb", "babba", "babba"],
           "tutorial": {
             "letter": "f",
             "title": "Push It",
@@ -124,14 +108,28 @@
           }
         },
         {
-          "id": 10,
+          "id": 13,
+          "name": "Wheel Work",
+          "par": 3,
+          "grid": ["fabb", "babb", "abba"]
+        },
+        {
+          "id": 14,
           "name": "Chain Reaction",
           "par": 2,
-          "grid": [
-            "abdb",
-            "dbca",
-            "abcf"
-          ]
+          "grid": ["abdb", "dbca", "abcf"]
+        },
+        {
+          "id": 15,
+          "name": "Conveyor",
+          "par": 3,
+          "grid": ["efab", "abba", "babb"]
+        },
+        {
+          "id": 16,
+          "name": "Meltdown",
+          "par": 4,
+          "grid": ["edfb", "bacb", "abca", "cbad"]
         }
       ]
     },
@@ -140,13 +138,10 @@
       "name": "Kinetics",
       "levels": [
         {
-          "id": 11,
+          "id": 17,
           "name": "Grab and Go",
           "par": 5,
-          "grid": [
-            "gaabcab",
-            "bcbdaag"
-          ],
+          "grid": ["gaabcab", "bcbdaag"],
           "tutorial": {
             "letter": "g",
             "title": "Get Over Here",
@@ -154,28 +149,22 @@
           }
         },
         {
-          "id": 12,
+          "id": 18,
           "name": "Corner Pockets",
           "par": 4,
-          "grid": [
-            "aaab",
-            "baaa",
-            "abaa",
-            "aaba",
-            "gccg"
-          ]
+          "grid": ["aaab", "baaa", "abaa", "aaba", "gccg"]
         },
         {
-          "id": 13,
+          "id": 19,
+          "name": "Long Reach",
+          "par": 3,
+          "grid": ["gaacbab"]
+        },
+        {
+          "id": 20,
           "name": "Hold That Thought",
-          "par": 7,
-          "grid": [
-            "bac",
-            "bbb",
-            "ghc",
-            "aca",
-            "bbc"
-          ],
+          "par": 1,
+          "grid": ["ahd"],
           "tutorial": {
             "letter": "h",
             "title": "Heavy Lifting",
@@ -183,32 +172,33 @@
           }
         },
         {
-          "id": 14,
+          "id": 21,
           "name": "Juggling Act",
           "par": 5,
-          "grid": [
-            "bbcb",
-            "bheb",
-            "bcdb",
-            "eaae"
-          ]
+          "grid": ["bbcb", "bheb", "bcdb", "eaae"]
         },
         {
-          "id": 15,
+          "id": 22,
           "name": "Leapfrog",
-          "par": 11,
-          "grid": [
-            "jcbcj",
-            "cbabc",
-            "bajab",
-            "cbacb",
-            "jcbcj"
-          ],
+          "par": 14,
+          "grid": ["jcbcj", "cbabc", "bajab", "cbacb", "jcbcj"],
           "tutorial": {
             "letter": "j",
             "title": "The Long Jump",
             "body": "j • Jump — swaps with a letter exactly three cells away. The long-range cousin of b and c."
           }
+        },
+        {
+          "id": 23,
+          "name": "Heavy Lifting",
+          "par": 9,
+          "grid": ["bac", "bbb", "ghc", "aca", "bbc"]
+        },
+        {
+          "id": 24,
+          "name": "Kinetic Exam",
+          "par": 4,
+          "grid": ["gbhbj", "bacab"]
         }
       ]
     },
@@ -217,25 +207,10 @@
       "name": "Dynamics",
       "levels": [
         {
-          "id": 16,
-          "name": "Acid Bath",
-          "par": 4,
-          "grid": [
-            "facaj",
-            "edade",
-            "jacaf"
-          ]
-        },
-        {
-          "id": 17,
+          "id": 25,
           "name": "Kickoff",
-          "par": 6,
-          "grid": [
-            "kcbc",
-            "bcab",
-            "jeje",
-            "cbck"
-          ],
+          "par": 1,
+          "grid": ["kdaan", "aaaad"],
           "tutorial": {
             "letter": "k",
             "title": "Boot Camp",
@@ -243,27 +218,27 @@
           }
         },
         {
-          "id": 18,
+          "id": 26,
           "name": "Set Pieces",
           "par": 3,
-          "grid": [
-            "kdefk",
-            "jcbfk"
-          ]
+          "grid": ["kdefk", "jcbfk"]
         },
         {
-          "id": 19,
+          "id": 27,
+          "name": "Bank Shot",
+          "par": 6,
+          "grid": ["kaiba", "ba_ab"],
+          "tutorial": {
+            "letter": "i",
+            "title": "The Unmovable Object",
+            "body": "i • Immovable — cannot be moved or touched by anything. Kicked letters sail right over it.\n\nSolve around it: every line through an i is already half-decided."
+          }
+        },
+        {
+          "id": 28,
           "name": "Love Letters",
-          "par": 36,
-          "grid": [
-            "bdbcdbd",
-            "dbdbbdb",
-            "bdbadbd",
-            "cbalabc",
-            "dbdabdb",
-            "bdbbdbd",
-            "dbdcbdb"
-          ],
+          "par": 40,
+          "grid": ["bdbcdbd", "dbdbbdb", "bdbadbd", "cbalabc", "dbdabdb", "bdbbdbd", "dbdcbdb"],
           "tutorial": {
             "letter": "l",
             "title": "Lovely",
@@ -271,14 +246,28 @@
           }
         },
         {
-          "id": 20,
+          "id": 29,
+          "name": "Counterattack",
+          "par": 6,
+          "grid": ["kcbc", "bcab", "jeje", "cbck"]
+        },
+        {
+          "id": 30,
+          "name": "Acid Bath",
+          "par": 4,
+          "grid": ["facaj", "edade", "jacaf"]
+        },
+        {
+          "id": 31,
           "name": "Assembly Line",
           "par": 4,
-          "grid": [
-            "ljjjaah",
-            "ekfgbba",
-            "aaaabbc"
-          ]
+          "grid": ["ljjjaah", "ekfgbba", "aaaabbc"]
+        },
+        {
+          "id": 32,
+          "name": "Demolition",
+          "par": 7,
+          "grid": ["gaaaaad", "kdaaaaa", "abafaba"]
         }
       ]
     },
@@ -287,18 +276,10 @@
       "name": "Synthesis",
       "levels": [
         {
-          "id": 21,
+          "id": 33,
           "name": "The Monster",
-          "par": 36,
-          "grid": [
-            "dbdcbdb",
-            "bdbbdbd",
-            "dbdabdb",
-            "cbamabc",
-            "bdbadbd",
-            "dbdbbdb",
-            "bdbcdbd"
-          ],
+          "par": 38,
+          "grid": ["dbdcbdb", "bdbbdbd", "dbdabdb", "cbamabc", "bdbadbd", "dbdbbdb", "bdbcdbd"],
           "tutorial": {
             "letter": "m",
             "title": "Monstrous",
@@ -306,48 +287,381 @@
           }
         },
         {
-          "id": 22,
+          "id": 34,
           "name": "Monster Mash",
           "par": 12,
-          "grid": [
-            "aabbc",
-            "abcde",
-            "bcdee",
-            "bmebb",
-            "aaaaa"
-          ]
+          "grid": ["aabbc", "abcde", "bcdee", "bmebb", "aaaaa"]
         },
         {
-          "id": 23,
-          "name": "Demolition",
-          "par": 4,
-          "grid": [
-            "gaaaaad",
-            "kdaaaaa",
-            "abafaba"
-          ]
+          "id": 35,
+          "name": "Riptide",
+          "par": 7,
+          "grid": ["abmba", "baaab", "ababa"]
         },
         {
-          "id": 24,
+          "id": 36,
           "name": "The Gauntlet",
-          "par": 6,
-          "grid": [
-            "abcd",
-            "efgh",
-            "jklm",
-            "hgfe",
-            "dcba"
-          ]
+          "par": 9,
+          "grid": ["abcd", "efgh", "jklm", "hgfe", "dcba"]
         },
         {
-          "id": 25,
-          "name": "Final Exam",
+          "id": 37,
+          "name": "Midterm Exam",
+          "par": 6,
+          "grid": ["ggaaagg", "deeeeed", "hkhkhkh"]
+        },
+        {
+          "id": 38,
+          "name": "Catalyst",
+          "par": 3,
+          "grid": ["gead", "abba", "dcba"]
+        },
+        {
+          "id": 39,
+          "name": "Crossfire",
+          "par": 2,
+          "grid": ["kfl", "bab", "aba"]
+        },
+        {
+          "id": 40,
+          "name": "Half Alphabet",
+          "par": 4,
+          "grid": ["badc", "fehg", "kjml", "i___"]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Silence",
+      "levels": [
+        {
+          "id": 41,
+          "name": "Quiet Please",
+          "par": 1,
+          "grid": ["bia", "bn_", "a_b"],
+          "tutorial": {
+            "letter": "n",
+            "title": "The Quiet One",
+            "body": "n • Nullify — a silent aura: letters directly next to an n act like a's. They can't act, can't delete, can't protect themselves.\n\nEven the untouchable i goes quiet beside an n. Two n's side by side cancel each other out."
+          }
+        },
+        {
+          "id": 42,
+          "name": "Off Switch",
+          "par": 1,
+          "grid": ["bda", "bn_", "a_b"]
+        },
+        {
+          "id": 43,
+          "name": "Roundabout",
           "par": 5,
-          "grid": [
-            "ggaaagg",
-            "deeeeed",
-            "hkhkhkh"
-          ]
+          "grid": ["bdca", "naba"]
+        },
+        {
+          "id": 44,
+          "name": "Double Negative",
+          "par": 1,
+          "grid": ["cnnb", "a__b"]
+        },
+        {
+          "id": 45,
+          "name": "Echo",
+          "par": 1,
+          "grid": ["aoba"],
+          "tutorial": {
+            "letter": "o",
+            "title": "Sound Waves",
+            "body": "o • Onomatopoeia — swaps places with any vowel on the board (a, e, u, or another o), no matter how far away.\n\nEvery a on the board is a landing pad."
+          }
+        },
+        {
+          "id": 46,
+          "name": "Vowel Movement",
+          "par": 4,
+          "grid": ["eaobe", "babab"]
+        },
+        {
+          "id": 47,
+          "name": "Hush Money",
+          "par": 2,
+          "grid": ["o_bn", "aab_", "bab_"]
+        },
+        {
+          "id": 48,
+          "name": "Sound and Silence",
+          "par": 3,
+          "grid": ["bi_n", "oa_b", "ab_b"]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Demolition Crew",
+      "levels": [
+        {
+          "id": 49,
+          "name": "Clean Sweep",
+          "par": 1,
+          "grid": ["bpda", "abab"],
+          "tutorial": {
+            "letter": "p",
+            "title": "Fire in the Hole",
+            "body": "p • Purge — fires the moment you tap it: destroys itself and all four of its neighbours.\n\nThe only letter that can destroy a d. Only an i survives the blast."
+          }
+        },
+        {
+          "id": 50,
+          "name": "Controlled Burn",
+          "par": 4,
+          "grid": ["dpab", "abca", "bacb"]
+        },
+        {
+          "id": 51,
+          "name": "Collateral",
+          "par": 2,
+          "grid": ["pabp", "bcbc"]
+        },
+        {
+          "id": 52,
+          "name": "The Eraser",
+          "par": 1,
+          "grid": ["accrca"],
+          "tutorial": {
+            "letter": "r",
+            "title": "Rub It Out",
+            "body": "r • Remove — erases every copy of an adjacent letter from the whole board, then settles down as an a.\n\nRemoving d's costs the r its life. It can never remove an i."
+          }
+        },
+        {
+          "id": 53,
+          "name": "Pattern Purge",
+          "par": 3,
+          "grid": ["rcbc", "adca", "cabc"]
+        },
+        {
+          "id": 54,
+          "name": "Scorched Earth",
+          "par": 2,
+          "grid": ["crdb", "dbdc", "bdcb"]
+        },
+        {
+          "id": 55,
+          "name": "Dust and Ashes",
+          "par": 2,
+          "grid": ["prdc", "cbcb", "bccb"]
+        },
+        {
+          "id": 56,
+          "name": "Demolition Derby",
+          "par": 3,
+          "grid": ["kpdc", "rabc", "bcba", "acbd", "bacb"]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Transmutation",
+      "levels": [
+        {
+          "id": 57,
+          "name": "Downgrade",
+          "par": 1,
+          "grid": ["ata"],
+          "tutorial": {
+            "letter": "t",
+            "title": "One Step Back",
+            "body": "t • Toggle — rewrites an adjacent letter into the previous letter of the alphabet: c becomes b, b becomes a.\n\nAnd an a wraps all the way around to z."
+          }
+        },
+        {
+          "id": 58,
+          "name": "Alphabet Soup",
+          "par": 3,
+          "grid": ["atac", "bbca"]
+        },
+        {
+          "id": 59,
+          "name": "Level Up",
+          "par": 2,
+          "grid": ["uac"],
+          "tutorial": {
+            "letter": "u",
+            "title": "One Step Forward",
+            "body": "u • Upgrade — rewrites an adjacent letter into the next letter of the alphabet: a becomes b, b becomes c.\n\nAnd a z wraps back around to a. The exact mirror of t."
+          }
+        },
+        {
+          "id": 60,
+          "name": "The Elevator",
+          "par": 3,
+          "grid": ["tbu", "abc", "bca"]
+        },
+        {
+          "id": 61,
+          "name": "Carbon Copy",
+          "par": 1,
+          "grid": ["cxc"],
+          "tutorial": {
+            "letter": "x",
+            "title": "Copy That",
+            "body": "x • Xerox — becomes an exact copy of an adjacent letter; the original stays put.\n\nIt can even photocopy a d — the only way to create one. It cannot copy an i."
+          }
+        },
+        {
+          "id": 62,
+          "name": "Print Run",
+          "par": 2,
+          "grid": ["xbx", "aba", "bab"]
+        },
+        {
+          "id": 63,
+          "name": "Forgery",
+          "par": 3,
+          "grid": ["axtb", "_c_a", "_cbb"]
+        },
+        {
+          "id": 64,
+          "name": "Philosopher's Stone",
+          "par": 4,
+          "grid": ["xtu", "bca", "acb"]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Choreography",
+      "levels": [
+        {
+          "id": 65,
+          "name": "Revolving Door",
+          "par": 1,
+          "grid": ["a_d", "_sa", "d_i"],
+          "tutorial": {
+            "letter": "s",
+            "title": "Spin Cycle",
+            "body": "s • Spin — swaps the two letters on opposite sides of itself. The s never moves.\n\nIt can never fix its own row or column — spin letters across it to repair the lines around it."
+          }
+        },
+        {
+          "id": 66,
+          "name": "Pirouette",
+          "par": 2,
+          "grid": ["a_d", "_sa", "_sb", "d_d"]
+        },
+        {
+          "id": 67,
+          "name": "Diagonal Waltz",
+          "par": 1,
+          "grid": ["awd", "_a_"],
+          "tutorial": {
+            "letter": "w",
+            "title": "May I Have This Dance",
+            "body": "w • Waltz — glides diagonally: swaps with any letter one diagonal step away.\n\nThe only letter in the alphabet that moves this way."
+          }
+        },
+        {
+          "id": 68,
+          "name": "Ballroom",
+          "par": 2,
+          "grid": ["wad", "_a_", "ada"]
+        },
+        {
+          "id": 69,
+          "name": "Send Off",
+          "par": 1,
+          "grid": ["yaab"],
+          "tutorial": {
+            "letter": "y",
+            "title": "Full Send",
+            "body": "y • Yeet — hurls itself to the far edge of the board; every letter it sails past shifts one step back.\n\nA kick, aimed at yourself."
+          }
+        },
+        {
+          "id": 70,
+          "name": "Boomerang",
+          "par": 2,
+          "grid": ["ykab", "abab"]
+        },
+        {
+          "id": 71,
+          "name": "Dance Card",
+          "par": 2,
+          "grid": ["wsy", "bac", "cba"]
+        },
+        {
+          "id": 72,
+          "name": "Grand Ballet",
+          "par": 8,
+          "grid": ["y_ad", "as_a", "_w_d"]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Ascension",
+      "levels": [
+        {
+          "id": 73,
+          "name": "Her Majesty",
+          "par": 1,
+          "grid": ["qa_", "_d_", "ada"],
+          "tutorial": {
+            "letter": "q",
+            "title": "Long May She Reign",
+            "body": "q • Queen — swaps with any letter along her row, column, or diagonals. Any distance; nothing in between blocks her.\n\nTouching a d still ends her reign."
+          }
+        },
+        {
+          "id": 74,
+          "name": "Royal Court",
+          "par": 1,
+          "grid": ["c_d", "dqa", "a_a"]
+        },
+        {
+          "id": 75,
+          "name": "Outbreak",
+          "par": 1,
+          "grid": ["avda"],
+          "tutorial": {
+            "letter": "v",
+            "title": "Patient Zero",
+            "body": "v • Virus — swaps like a b, but whatever it swaps with becomes a v too.\n\nEven a d catches it — at the cost of the v itself. Only i is immune."
+          }
+        },
+        {
+          "id": 76,
+          "name": "Quarantine",
+          "par": 3,
+          "grid": ["vbn", "aba", "bab"]
+        },
+        {
+          "id": 77,
+          "name": "Final Spark",
+          "par": 1,
+          "grid": ["zab", "bba", "aba"],
+          "tutorial": {
+            "letter": "z",
+            "title": "The Last Letter",
+            "body": "z • Zap — the final letter of the alphabet: swaps with any cell, anywhere on the board. No lines, no limits.\n\nOnly i is beyond its reach."
+          }
+        },
+        {
+          "id": 78,
+          "name": "Lightning Round",
+          "par": 1,
+          "grid": ["azd", "_a_", "dza"]
+        },
+        {
+          "id": 79,
+          "name": "The Full Alphabet",
+          "par": 3,
+          "grid": ["orst", "u_yz", "npqw"]
+        },
+        {
+          "id": 80,
+          "name": "Ascension",
+          "par": 13,
+          "grid": ["bqcvb", "waiaz", "cbsbc", "yanat", "bucpb"]
         }
       ]
     }

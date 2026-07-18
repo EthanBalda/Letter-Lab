@@ -21,6 +21,8 @@ class Solver(
     private val beamWidth: Int = 400,
     /** Max solution length attempted by beam search. */
     private val maxBeamMoves: Int = 80,
+    /** Polled during search loops; returning true aborts the solve with [Result.Unknown]. */
+    private val isCancelled: () -> Boolean = { false },
 ) {
 
     sealed interface Result {
@@ -68,8 +70,39 @@ class Solver(
         return solveAny(start)
     }
 
+    /**
+     * Latency-oriented solve for interactive use (hints). Exhaustive BFS is
+     * reserved for tiny boards, where it is near-instant and provably
+     * optimal; on anything bigger it burns its whole budget before giving up
+     * whenever the solution is deep. Everything else escalates through
+     * increasingly greedy weighted A* passes — greedier weights accept
+     * longer solutions but land in far fewer nodes — with beam search as the
+     * last resort. Stage node budgets shrink with board area (node cost
+     * grows with it), keeping each pass roughly constant wall-clock.
+     */
+    fun solveFast(start: Board): Result {
+        val cells = start.rows * start.cols
+        if (cells <= FAST_BFS_CELL_LIMIT) {
+            val bfs = solveOptimal(start, minOf(bfsNodeBudget, FAST_BFS_NODE_BUDGET))
+            if (bfs !is Result.Unknown) return bfs
+        }
+        // On large boards the near-optimal weight never lands within an
+        // interactive budget; start the ladder at the greedier rungs.
+        val weights = if (cells > FAST_GENTLE_WEIGHT_CELL_LIMIT) {
+            listOf(2.5, 4.0)
+        } else {
+            listOf(1.5, 2.5, 4.0)
+        }
+        val perStage = (FAST_STAGE_NODE_BASE / cells).coerceAtLeast(2_000)
+        for (weight in weights) {
+            val directed = solveBestFirst(start, weight = weight, nodeBudget = perStage)
+            if (directed !is Result.Unknown) return directed
+        }
+        return solveAny(start)
+    }
+
     /** Exhaustive breadth-first search; optimal when it succeeds. */
-    fun solveOptimal(start: Board): Result {
+    fun solveOptimal(start: Board, nodeBudget: Int = bfsNodeBudget): Result {
         if (GameEngine.isSolved(start)) return Result.Solved(emptyList(), optimal = true)
         val startKey = start.serialize()
         // parent[key] = (parentKey, move that produced key). The queue holds
@@ -81,8 +114,9 @@ class Solver(
         var explored = 0
 
         while (queue.isNotEmpty()) {
+            if (isCancelled()) return Result.Unknown
             val boardKey = queue.removeFirst()
-            if (++explored > bfsNodeBudget) return Result.Unknown
+            if (++explored > nodeBudget) return Result.Unknown
             val board = Board.deserialize(boardKey)
             for ((move, next) in expand(board)) {
                 val key = next.serialize()
@@ -125,6 +159,7 @@ class Solver(
         repeat(maxBeamMoves) {
             val candidates = mutableListOf<Triple<Int, Board, List<Move>>>()
             for ((board, path) in frontier) {
+                if (isCancelled()) return Result.Unknown
                 for ((move, next) in expand(board)) {
                     val key = next.serialize()
                     if (!visited.add(key)) continue
@@ -159,6 +194,7 @@ class Solver(
         var explored = 0
 
         while (open.isNotEmpty()) {
+            if (isCancelled()) return Result.Unknown
             val node = open.poll()
             if (++explored > nodeBudget) return Result.Unknown
             val board = Board.deserialize(node.key)
@@ -172,16 +208,36 @@ class Solver(
                 open += Node(key, node.g + 1, node.g + 1 + weight * disorder(next))
             }
         }
-        return Result.Unknown
+        // Open set drained within budget: every reachable state was expanded.
+        return Result.ProvenUnsolvable
     }
 
+    /**
+     * Full best-known solution from [board] within the latency-oriented
+     * budgets, or null. Callers can cache the path: each prefix state's
+     * next move is a valid hint there too.
+     */
+    fun hintPath(board: Board): List<Move>? =
+        (solveFast(board) as? Result.Solved)?.moves
+
     /** First move of the best solution found within the budgets, or null. */
-    fun hint(board: Board): Move? =
-        (solve(board) as? Result.Solved)?.moves?.firstOrNull()
+    fun hint(board: Board): Move? = hintPath(board)?.firstOrNull()
 
     companion object {
         /** Boards larger than this skip BFS in [solve]. */
         const val BFS_CELL_LIMIT = 20
+
+        /** [solveFast] only attempts exhaustive BFS on boards this small. */
+        const val FAST_BFS_CELL_LIMIT = 12
+
+        /** BFS node cap in [solveFast]; tiny boards resolve within this or never. */
+        const val FAST_BFS_NODE_BUDGET = 15_000
+
+        /** Per-A*-stage node budget in [solveFast] is this divided by cell count. */
+        const val FAST_STAGE_NODE_BASE = 400_000
+
+        /** Boards larger than this skip the near-optimal A* weight in [solveFast]. */
+        const val FAST_GENTLE_WEIGHT_CELL_LIMIT = 25
 
         /**
          * How far from solved a board is: for every row and column, the

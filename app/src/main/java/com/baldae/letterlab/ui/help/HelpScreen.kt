@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.baldae.letterlab.domain.Cell
 import com.baldae.letterlab.ui.LetterBook
+import com.baldae.letterlab.ui.components.AnimatedExample
 import com.baldae.letterlab.ui.components.LetterTile
 import com.baldae.letterlab.ui.components.MiniTileRow
 import com.baldae.letterlab.ui.theme.LabTeal
@@ -90,7 +91,7 @@ fun HelpScreen(onBack: () -> Unit) {
                     Text(
                         "Tap a letter to pick it up, then tap a highlighted cell to act. " +
                             "Tap the letter again to put it down — that's free. " +
-                            "l and m act the instant you select them.\n\n" +
+                            "l, m and p act the instant you select them.\n\n" +
                             "Undo is unlimited and every level can be restarted. " +
                             "Fewer moves earn more stars.",
                         style = MaterialTheme.typography.bodyMedium,
@@ -134,8 +135,24 @@ fun HelpScreen(onBack: () -> Unit) {
                                 style = MaterialTheme.typography.titleSmall,
                                 color = TextDim,
                             )
-                            MiniTileRow(after)
+                            AnimatedExample(before, after)
                         }
+                    }
+                    info.tip?.let { tip ->
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            "Strategy: $tip",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = LabTeal.copy(alpha = 0.85f),
+                        )
+                    }
+                    info.interactions?.let { interactions ->
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            "Interactions: $interactions",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = TextDim,
+                        )
                     }
                 }
             }

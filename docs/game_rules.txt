@@ -38,3 +38,119 @@ Pulls every cardinal letter into it whenever it is selected. Letters that would 
 
 m; Monstrous (These should probably be ditched if we commit to grids.) : bacbmccbb -> acbbmbccb
 Opposite of ‘l’, they scare every cardinal letter one slot away. Any letters that would go off the grid, instead end up in the empty adjacent slots.
+
+
+==========================================================================
+The Letters Rules, N-Z (LetterLab 2.0)
+
+Adapted from LetterLab_FinalProjectFall2024.pdf for the grid engine and its
+one-origin-one-target selection model. Where 2.0 deviates from the original
+design, the deviation and its reason are noted inline.
+
+Universal laws (unchanged from a-m, and every new letter obeys them):
+- d never moves on its own and destroys any letter that interacts with it.
+- i cannot be moved or targeted by anything; sliding letters pass over it.
+- Exactly one origin tap and at most one target tap per move.
+
+n; Nullify : with n at the end: aabcn -> the c (adjacent to n) cannot act
+Passive aura. Letters cardinally adjacent to an n lose their abilities and
+behave exactly like 'a': selectable letters cannot act, d stops deleting
+(and can be moved!), and i loses its protection. Two adjacent n's nullify
+each other, switching both auras off (no negative stacking). n itself
+never acts; other letters can move it around like an 'a'.
+[2.0 notes: original name "No" -> "Nullify" (more descriptive, still one
+word). The aura is implemented as "the letter effectively becomes 'a'",
+which uniformly produces every clarification in the original doc: nullified
+d's no longer delete, nullified i's are the only touchable i's, making n
+the counter to both.]
+
+o; Onomatopoeia : abaobba -> obaabba OR aboabba OR abaabbo
+Swaps places with any vowel on the board (a, e, u, or another o), at any
+distance. It cannot reach i - no letter can.
+
+p; Purge : aapd -> a___ (fires on selection, like l and m)
+Needs no target: the moment you select it, it destroys itself and all four
+cardinal neighbours - the only letter that can destroy a d. Only i
+survives the blast.
+[2.0 note: the original example showed p deleting an i. 2.0 keeps i
+absolute (only n gets through), preserving i's identity and n's niche.]
+
+q; Queen : like chess - any distance along its row, column, or diagonal
+Swaps with any letter any distance away in a straight line: the whole row,
+the whole column, and both diagonals. Distance doesn't matter and letters
+in between don't block the swap. Touching a d still destroys her.
+[2.0 note: original q was "swap with anything except i and d". Restricting
+her to chess-queen lines earns the name, leaves z a throne to claim, and
+keeps the universal d rule intact instead of special-casing it away.]
+
+r; Remove : accdrca (select the adjacent c) -> a__dr_a with r becoming a
+Targets an adjacent letter and removes every copy of that letter from the
+board, then becomes an 'a' itself. Selecting an adjacent d removes every
+d - but consumes the r entirely. It cannot remove i's or blanks.
+[2.0 note: original allowed removing i's; 2.0 keeps i absolute.]
+
+s; Spin : bsa -> asb
+Swaps the selected adjacent letter with the letter directly opposite it
+through the s. The s itself never moves. If the opposite cell holds a d,
+the selected letter is destroyed against it.
+
+t; Toggle : btc (select the b) -> atc
+Transforms an adjacent letter into the previous letter of the alphabet:
+c becomes b, b becomes a, and a wraps around to z. Targeting a d is
+suicide, as always; i cannot be targeted.
+
+u; Upgrade : buc (select the b) -> cuc
+Transforms an adjacent letter into the next letter of the alphabet:
+a becomes b, b becomes c, and z wraps around to a. The exact mirror of t.
+[2.0 note: renamed from "Undo" - the game has an undo button, and a letter
+by the same name is a usability landmine. "Upgrade" reads instantly.]
+
+v; Virus : abvac (select the b) -> avvac
+Swaps with an adjacent letter like b - but the letter it swaps with
+becomes a v. Swapping into a d destroys the v, and the d catches the
+virus: it becomes a v itself. The only thing that ever transforms a d.
+i is immune, as ever.
+
+w; Waltz : swaps with any diagonal neighbour
+Glides diagonally: swaps with any of its four diagonal neighbours. The
+only letter that moves diagonally by itself. A d on the diagonal still
+destroys it.
+[2.0 note: original w only stepped up-left, wrapping at edges. One fixed
+direction is arbitrary on a grid and frustrating to route; "the diagonal
+mover" is cleaner, still unique, and keeps the dance.]
+
+x; Xerox : caxb (select the b) -> cabb
+Becomes an exact copy of an adjacent letter; the original stays where it
+is. Copying an h copies what it holds. It can even photocopy a d - the
+only way to create one - but cannot copy an i or a blank.
+[2.0 note: original x transformed letter A into letter B, needing two
+targets. Copying the target onto itself keeps the photocopy fantasy in a
+single tap and stays just as combo-rich.]
+
+y; Yeet : yaab (select the a to its right) -> aaby
+Hurls itself: picks a cardinal direction and flies to the far edge of the
+board in that direction; every letter it sails past shifts one cell back
+to fill the gap. Kick, applied to yourself. Landing on a d is fatal; i's
+are sailed over.
+[2.0 note: original y jumped by counting vowels in the direction of
+travel. Vowel-counting is unreadable at a glance and drifts as the board
+changes; self-kick keeps the yeet and pairs beautifully with k.]
+
+z; Zap : swaps with any letter, anywhere
+The final letter: swaps with any letter or blank cell anywhere on the
+board. No range limit, no line requirement. Only i is beyond its reach,
+and a d still ends it.
+[2.0 note: original z swapped any two letters (two targets). Letting z
+itself teleport-swap keeps the omnipotence in one tap; q keeps the lines,
+z gets the whole board.]
+
+Interaction quick-reference for the new letters:
+- Ways to deal with a d: e eats it, p bombs it, r purges all of them,
+  v infects it, n nullifies it (it can then be moved like an 'a'),
+  g/k/l/m sling it destructively, x can create more of them.
+- Ways to deal with an i: n nullifies it; nothing else touches it.
+- t/u/x/v change what letters exist; r/p/d/e change how many.
+- Suppressed letters (next to an active n) count as 'a' for every rule:
+  they cannot act, cannot delete, cannot protect themselves.
+- Held letters (inside an h) have no aura and no abilities; an h holding
+  something is still just 'h' for sorting purposes.

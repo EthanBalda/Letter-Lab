@@ -50,6 +50,19 @@ fun letterColor(letter: Char): Color = when (letter) {
     'k' -> Color(0xFFFFCA28)
     'l' -> Color(0xFFF48FB1)
     'm' -> Color(0xFF9C6ADE)
+    'n' -> Color(0xFFB0BEC5)
+    'o' -> Color(0xFF4DD0E1)
+    'p' -> Color(0xFFFF7043)
+    'q' -> Color(0xFFFFB300)
+    'r' -> Color(0xFFA1887F)
+    's' -> Color(0xFFAED581)
+    't' -> Color(0xFF64B5F6)
+    'u' -> Color(0xFF81D4A4)
+    'v' -> Color(0xFF9CCC2E)
+    'w' -> Color(0xFFCE93D8)
+    'x' -> Color(0xFFE0E0E0)
+    'y' -> Color(0xFFFFEE58)
+    'z' -> Color(0xFF7C4DFF)
     else -> Color(0xFF2A2F4A) // blank slot
 }
 
