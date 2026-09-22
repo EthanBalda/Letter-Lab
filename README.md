@@ -1,7 +1,7 @@
 # LetterLab
 
-A letter-sorting puzzle game for Android. Rearrange living letters — each with
-its own personality and ability — until every row and every column of the board
+A letter sorting puzzle game for Android. Rearrange living letters each with
+its own personality and ability until every row and every column of the board
 reads in alphabetical order (ascending or descending both count; blanks are
 skipped).
 
@@ -36,8 +36,7 @@ skipped).
 | `y` | Yeet | Hurls itself to the far edge; passed letters shift back |
 | `z` | Zap | Swaps with any cell anywhere on the board |
 
-The full design notes live in [`docs/game_rules.txt`](docs/game_rules.txt),
-adapted from the original `LetterLab_FinalProjectFall2024` design document.
+The full design notes live in [`docs/game_rules.txt`](docs/game_rules.txt).
 
 ## Features
 
@@ -94,12 +93,12 @@ The engine is fully unit-tested (`app/src/test`): every letter mechanic is
 verified against the worked examples in the design document, and the
 shipped catalog is gated by three test layers:
 
-- `LevelCatalogTest` — structural: parseable, rectangular, unique ids,
+- `LevelCatalogTest` - structural: parseable, rectangular, unique ids,
   not pre-solved, pars positive, tutorial letters present.
-- `CampaignSolvabilityTest` — the release gate: every level has a
+- `CampaignSolvabilityTest` - the release gate: every level has a
   solver-found, engine-replayable solution **within par**, so all
   240 stars are earnable.
-- `CampaignIntegrityTest` — progression: no tutorial has a within-par
+- `CampaignIntegrityTest` - progression: no tutorial has a within-par
   solution that skips its featured letter (budget-bounded exhaustive
   search; passive letters d/i/n exempt), and every achievement and
   background theme is reachable.
